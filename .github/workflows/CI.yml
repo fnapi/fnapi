@@ -21,7 +21,7 @@ jobs:
             target: x86_64-apple-darwin
             build: |
               pnpm run --dir ./packages/compiler build:release:native
-              strip -x *.node
+              strip -x packages/compiler/*.node
           - host: windows-latest
             build: pnpm run --dir ./packages/compiler build:release:native
             target: x86_64-pc-windows-msvc
@@ -36,11 +36,11 @@ jobs:
             build: |-
               set -e &&
               pnpm run --dir ./packages/compiler build:release:native --target x86_64-unknown-linux-gnu &&
-              strip *.node
+              strip packages/compiler/*.node
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: set -e && pnpm run --dir ./packages/compiler build:release:native && strip *.node
+            build: set -e && pnpm run --dir ./packages/compiler build:release:native && strip packages/compiler/*.node
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
@@ -50,14 +50,14 @@ jobs:
               SYSROOT=$(xcrun --sdk macosx --show-sdk-path);
               export CFLAGS="-isysroot $SYSROOT -isystem $SYSROOT";
               pnpm run --dir ./packages/compiler build:release:native --target aarch64-apple-darwin
-              strip -x *.node
+              strip -x packages/compiler/*.node
           - host: ubuntu-latest
             target: aarch64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
             build: |-
               set -e &&
               pnpm run --dir ./packages/compiler build:release:native --target aarch64-unknown-linux-gnu &&
-              aarch64-unknown-linux-gnu-strip *.node
+              aarch64-unknown-linux-gnu-strip packages/compiler/*.node
           - host: ubuntu-latest
             target: armv7-unknown-linux-gnueabihf
             setup: |
@@ -65,7 +65,7 @@ jobs:
               sudo apt-get install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf -y
             build: |
               pnpm run --dir ./packages/compiler build:release:native --target=armv7-unknown-linux-gnueabihf
-              arm-linux-gnueabihf-strip *.node
+              arm-linux-gnueabihf-strip packages/compiler/*.node
           - host: ubuntu-latest
             target: aarch64-linux-android
             build: |
@@ -75,7 +75,7 @@ jobs:
               export AR="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
               export PATH="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH}"
               pnpm run --dir ./packages/compiler build:release:native --target aarch64-linux-android
-              ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip *.node
+              ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip packages/compiler/*.node
           - host: ubuntu-latest
             target: armv7-linux-androideabi
             build: |
@@ -85,7 +85,7 @@ jobs:
               export AR="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
               export PATH="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH}"
               pnpm run --dir ./packages/compiler build:release:native --target armv7-linux-androideabi
-              ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip *.node
+              ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip packages/compiler/*.node
           - host: ubuntu-latest
             target: aarch64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
@@ -93,7 +93,7 @@ jobs:
               set -e &&
               rustup target add aarch64-unknown-linux-musl &&
               pnpm run --dir ./packages/compiler build:release:native --target aarch64-unknown-linux-musl &&
-              /aarch64-linux-musl-cross/bin/aarch64-linux-musl-strip *.node
+              /aarch64-linux-musl-cross/bin/aarch64-linux-musl-strip packages/compiler/*.node
           - host: windows-latest
             target: aarch64-pc-windows-msvc
             build: pnpm run --dir ./packages/compiler build:release:native --target aarch64-pc-windows-msvc
@@ -170,7 +170,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: ${{ env.APP_NAME }}.*.node
+          path: ${{ env.APP_NAME }}.packages/compiler/*.node
           if-no-files-found: error
   build-freebsd:
     if: ${{ startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/ci' }}
@@ -212,7 +212,7 @@ jobs:
             freebsd-version
             pnpm i
             pnpm run --dir ./packages/compiler build:release:native
-            strip -x *.node
+            strip -x packages/compiler/*.node
             pnpm test
             rm -rf node_modules
             rm -rf target
@@ -220,7 +220,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: bindings-freebsd
-          path: ${{ env.APP_NAME }}.*.node
+          path: ${{ env.APP_NAME }}.packages/compiler/*.node
           if-no-files-found: error
   test-macOS-windows-binding:
     name: Test bindings on ${{ matrix.settings.target }} - node@${{ matrix.node }}
