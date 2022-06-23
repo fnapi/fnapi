@@ -1,7 +1,7 @@
 name: CI
 env:
   DEBUG: napi:*
-  APP_NAME: package-template
+  APP_NAME: fnapi
   MACOSX_DEPLOYMENT_TARGET: "10.13"
 "on":
   push:
