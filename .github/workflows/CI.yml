@@ -103,7 +103,7 @@ jobs:
           - host: windows-latest
             target: aarch64-pc-windows-msvc
             build: pnpm run --dir ./packages/compiler build:release:native --target aarch64-pc-windows-msvc
-    name: stable - ${{ matrix.settings.target }} - node@16
+    name: Release build - ${{ matrix.settings.target }} - node@16
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v3
@@ -125,7 +125,6 @@ jobs:
         with:
           profile: minimal
           override: true
-          toolchain: stable
           target: ${{ matrix.settings.target }}
       - name: Cache cargo
         uses: actions/cache@v3
@@ -201,7 +200,7 @@ jobs:
             curl -qL https://www.npmjs.com/install.sh | sh
             npm install -g pnpm
             curl https://sh.rustup.rs -sSf --output rustup.sh
-            sh rustup.sh -y --profile minimal --default-toolchain stable
+            sh rustup.sh -y --profile minimal --default-toolchain nightly
             export PATH="/usr/local/cargo/bin:$PATH"
             echo "~~~~ rustc --version ~~~~"
             rustc --version
