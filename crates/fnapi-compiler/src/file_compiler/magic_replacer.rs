@@ -37,8 +37,7 @@ impl VisitMut for MagicReplacer {
         })) = &e.callee
         {
             if &*prop.sym == "get" {
-                if !self.is_magic_type("Context", obj) && !self.is_magic_type("ServerConfig", &obj)
-                {
+                if !self.is_magic_type("Context", obj) && !self.is_magic_type("ServerConfig", obj) {
                     return;
                 }
 
@@ -94,7 +93,7 @@ impl VisitMut for MagicReplacer {
                     }
                 });
 
-                if self.is_magic_type("Context", &obj) {
+                if self.is_magic_type("Context", obj) {
                     // Context.get
                     // =>
                     // req.getContext(ClassName)
@@ -103,7 +102,7 @@ impl VisitMut for MagicReplacer {
                         .clone()
                         .make_member(quote_ident!("getContext"))
                         .as_callee();
-                } else if self.is_magic_type("ServerConfig", &obj) {
+                } else if self.is_magic_type("ServerConfig", obj) {
                     // ServerConfig.get
                     // =>
                     // req.getServerConfig(ClassName)

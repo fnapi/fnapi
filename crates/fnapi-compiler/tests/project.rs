@@ -96,7 +96,7 @@ fn print(cm: Arc<SourceMap>, m: &Module) -> String {
             wr: JsWriter::new(cm, "\n", &mut buf, None),
         };
 
-        emitter.emit_module(&m).unwrap();
+        emitter.emit_module(m).unwrap();
     }
 
     String::from_utf8(buf).unwrap()
@@ -136,7 +136,7 @@ impl VisitMut for ImportReplacer {
             let api_dir = api_pkg_src_dir();
 
             if &*i.src.value == "@fnapi/api" {
-                i.src.value = format!("{}/index.js", api_dir.display().to_string()).into();
+                i.src.value = format!("{}/index.js", api_dir.display()).into();
             } else {
                 i.src.value = i
                     .src

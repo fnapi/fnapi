@@ -110,7 +110,7 @@ impl TypeServer {
 
         trace!("Received response: `{}`", s);
 
-        let body = serde_json::from_str::<MethodTypes>(&s)
+        let body = serde_json::from_str::<MethodTypes>(s)
             .with_context(|| format!("failed to deserialize json: {}", s))?;
 
         Ok(body)

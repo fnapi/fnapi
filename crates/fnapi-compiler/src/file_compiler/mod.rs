@@ -194,7 +194,7 @@ impl FileCompiler<'_> {
                         .get_or_insert_with(|| private_ident!("wrapFnApiConfig"))
                         .clone()
                         .as_callee(),
-                    args: args_to_fn_api.unwrap_or_else(|| vec![]),
+                    args: args_to_fn_api.unwrap_or_default(),
                     type_args: Default::default(),
                 })),
                 definite: Default::default(),
@@ -278,12 +278,12 @@ impl FileCompiler<'_> {
         method.function.params.push(Param {
             span: DUMMY_SP,
             decorators: Default::default(),
-            pat: Pat::Ident(reply_var.clone().into()),
+            pat: Pat::Ident(reply_var.into()),
         });
 
         prepend_stmts(&mut body.stmts, stmts_for_param_init.into_iter());
 
-        body.visit_mut_with(&mut magic_replacer(req_var.clone(), self.imports.clone()));
+        body.visit_mut_with(&mut magic_replacer(req_var, self.imports.clone()));
 
         let ret_ty =
             self.extract_return_type(method.function.span, &method.function.return_type)?;
@@ -291,7 +291,7 @@ impl FileCompiler<'_> {
         let method_types = self
             .project
             .type_server
-            .query_return_type_of_method_sync(&self.filename, &name.sym);
+            .query_return_type_of_method_sync(self.filename, &name.sym);
 
         let method_types = match method_types {
             Ok(v) => v,
