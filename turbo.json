@@ -18,7 +18,7 @@
       "outputs": []
     },
     "build:release:native": {
-      "dependsOn": ["^build:native"],
+      "dependsOn": ["^build:release:native"],
       "cache": false
     },
     "build:release": {
