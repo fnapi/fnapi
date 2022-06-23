@@ -26,9 +26,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Disable cargo optimization
-        run: ./scripts/github/disable-debug-opt.sh
-
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
@@ -61,8 +58,9 @@ jobs:
         with:
           submodules: true
 
-      - name: Disable cargo optimization
-        run: ./scripts/github/disable-debug-opt.sh
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 6.0.2
 
       # We explicitly do this to cache properly.
       - name: Install Rust
@@ -78,12 +76,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-          cache: "yarn"
+          cache: "pnpm"
 
       - name: Install node dependencies
         shell: bash
         run: |
-          yarn
+          pnpm i
 
       # Ensure that all components are compilable.
       - name: Run cargo check for all targets
@@ -111,21 +109,19 @@ jobs:
 
       - uses: actions/checkout@v3
 
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 6.0.2
+
       # Source map format
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-          cache: "yarn"
-
-      - name: Disable cargo optimization
-        run: ./scripts/github/disable-debug-opt.sh
+          cache: "pnpm"
 
       # We explicitly do this to cache properly.
       - name: Install Rust
         uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          target: wasm32-wasi
 
       - uses: Swatinem/rust-cache@v1
         with:
@@ -135,13 +131,13 @@ jobs:
       - name: Install node dependencies
         shell: bash
         run: |
-          yarn
+          pnpm
 
       - name: Configure path (windows)
         shell: bash
         if: runner.os == 'Windows'
         run: |
-          echo $(yarn global bin) >> $GITHUB_PATH
+          echo $(pnpm global bin) >> $GITHUB_PATH
 
       - name: Run cargo test
         run: |

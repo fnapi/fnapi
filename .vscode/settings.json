@@ -13,6 +13,7 @@
         "Fastify",
         "fnapi",
         "openrpc",
+        "pnpm",
         "reqwest",
         "typeserver"
     ]
