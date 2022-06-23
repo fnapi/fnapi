@@ -7,9 +7,9 @@
   "cpu": [
     "arm64"
   ],
-  "main": "package-template.win32-arm64-msvc.node",
+  "main": "fnapi.win32-arm64-msvc.node",
   "files": [
-    "package-template.win32-arm64-msvc.node"
+    "fnapi.win32-arm64-msvc.node"
   ],
   "description": "Template project for writing node package with napi-rs",
   "keywords": [
@@ -28,5 +28,5 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "repository": "git@github.com:napi-rs/package-template.git"
+  "repository": "git@github.com:fnapi/fnapi.git"
 }

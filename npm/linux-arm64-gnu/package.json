@@ -10,9 +10,9 @@
   "libc": [
     "glibc"
   ],
-  "main": "package-template.linux-arm64-gnu.node",
+  "main": "fnapi.linux-arm64-gnu.node",
   "files": [
-    "package-template.linux-arm64-gnu.node"
+    "fnapi.linux-arm64-gnu.node"
   ],
   "description": "Template project for writing node package with napi-rs",
   "keywords": [
@@ -31,5 +31,5 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "repository": "git@github.com:napi-rs/package-template.git"
+  "repository": "git@github.com:fnapi/fnapi.git"
 }

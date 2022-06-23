@@ -10,9 +10,9 @@
   "libc": [
     "musl"
   ],
-  "main": "package-template.linux-x64-musl.node",
+  "main": "fnapi.linux-x64-musl.node",
   "files": [
-    "package-template.linux-x64-musl.node"
+    "fnapi.linux-x64-musl.node"
   ],
   "description": "Template project for writing node package with napi-rs",
   "keywords": [
@@ -31,5 +31,5 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "repository": "git@github.com:napi-rs/package-template.git"
+  "repository": "git@github.com:fnapi/fnapi.git"
 }

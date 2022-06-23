@@ -7,9 +7,9 @@
   "cpu": [
     "x64"
   ],
-  "main": "package-template.darwin-x64.node",
+  "main": "fnapi.darwin-x64.node",
   "files": [
-    "package-template.darwin-x64.node"
+    "fnapi.darwin-x64.node"
   ],
   "description": "Template project for writing node package with napi-rs",
   "keywords": [
@@ -28,5 +28,5 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "repository": "git@github.com:napi-rs/package-template.git"
+  "repository": "git@github.com:fnapi/fnapi.git"
 }
