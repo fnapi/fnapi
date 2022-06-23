@@ -2,6 +2,7 @@
     "words": [
         "fnapi",
         "msvc",
-        "pnpm"
+        "pnpm",
+        "typeserver"
     ]
 }
