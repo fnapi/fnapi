@@ -12,6 +12,6 @@ fnapi-core = {path = "../fnapi-core"}
 serde = {version = "1", features = ["derive", "rc"]}
 serde_json = "1"
 swc_atoms = "0.2.12"
-swc_common = {version = "0.18.9", features = ["concurrent"]}
+swc_common = { version = "0.18.9", features = ["concurrent"] }
 swc_ecma_ast = "0.79.0"
 swc_ecma_utils = "0.86.2"
