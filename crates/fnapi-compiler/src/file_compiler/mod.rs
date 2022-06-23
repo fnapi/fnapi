@@ -457,7 +457,7 @@ impl VisitMut for FileCompiler<'_> {
                         span: *span,
                         specifiers: vec![ImportSpecifier::Default(ImportDefaultSpecifier {
                             span: DUMMY_SP,
-                            local: wrapper.clone().into(),
+                            local: wrapper.clone(),
                         })],
                         src: "@fnapi/api/rt/wrapApiClass.js".into(),
                         type_only: false,
@@ -485,7 +485,7 @@ impl VisitMut for FileCompiler<'_> {
                     span: *span,
                     expr: box Expr::Call(CallExpr {
                         span: DUMMY_SP,
-                        callee: wrapper.clone().as_callee(),
+                        callee: wrapper.as_callee(),
                         args: vec![
                             cls.take().as_arg(),
                             ArrayLit {
