@@ -13,7 +13,8 @@
     "turbo": "^1.2.16"
   },
   "scripts": {
-    "prepare": "husky install && git config feature.manyFiles true"
+    "prepare": "husky install && git config feature.manyFiles true",
+    "build": "turbo run build:release"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

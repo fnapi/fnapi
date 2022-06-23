@@ -10,6 +10,7 @@
   },
   "type": "module",
   "scripts": {
-    "build:native": "napi build --platform --cargo-name binding --js ./binding.js --dts ./binding.d.ts -p binding --cargo-cwd ../../"
+    "build:native": "napi build --platform --cargo-name binding --js ./binding.js --dts ./binding.d.ts -p binding --cargo-cwd ../../",
+    "build:release:native": "pnpm run build:native --release"
   }
 }

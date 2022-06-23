@@ -55,7 +55,7 @@ where
     );
     let handler = Arc::new(Handler::with_emitter(true, false, Box::new(emitter)));
 
-    let ret = HANDLER.set(&handler.clone(), || op(handler.clone()));
+    let ret = HANDLER.set(&handler, || op(handler.clone()));
 
     if handler.has_errors() {
         let mut lock = wr.0.lock();

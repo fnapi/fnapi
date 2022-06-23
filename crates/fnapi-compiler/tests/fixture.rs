@@ -15,7 +15,7 @@ use testing::NormalizedOutput;
 
 #[testing::fixture("tests/fixture/**/input.ts")]
 fn compile(input: PathBuf) {
-    let output_path = input.with_file_name("output.js");
+    let output_path = input.with_file_name("output.mjs");
     let api_def_output = input.with_file_name("apiDef.json");
     let node_client = input.with_file_name("client.node.mjs");
     let web_client = input.with_file_name("client.web.mjs");
@@ -128,7 +128,7 @@ fn print(cm: Arc<SourceMap>, m: &Module) -> String {
             wr: JsWriter::new(cm, "\n", &mut buf, None),
         };
 
-        emitter.emit_module(&m).unwrap();
+        emitter.emit_module(m).unwrap();
     }
 
     String::from_utf8(buf).unwrap()

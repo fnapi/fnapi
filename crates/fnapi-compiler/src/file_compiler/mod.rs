@@ -194,7 +194,7 @@ impl FileCompiler<'_> {
                         .get_or_insert_with(|| private_ident!("wrapFnApiConfig"))
                         .clone()
                         .as_callee(),
-                    args: args_to_fn_api.unwrap_or_else(|| vec![]),
+                    args: args_to_fn_api.unwrap_or_default(),
                     type_args: Default::default(),
                 })),
                 definite: Default::default(),
@@ -278,12 +278,12 @@ impl FileCompiler<'_> {
         method.function.params.push(Param {
             span: DUMMY_SP,
             decorators: Default::default(),
-            pat: Pat::Ident(reply_var.clone().into()),
+            pat: Pat::Ident(reply_var.into()),
         });
 
         prepend_stmts(&mut body.stmts, stmts_for_param_init.into_iter());
 
-        body.visit_mut_with(&mut magic_replacer(req_var.clone(), self.imports.clone()));
+        body.visit_mut_with(&mut magic_replacer(req_var, self.imports.clone()));
 
         let ret_ty =
             self.extract_return_type(method.function.span, &method.function.return_type)?;
@@ -291,7 +291,7 @@ impl FileCompiler<'_> {
         let method_types = self
             .project
             .type_server
-            .query_return_type_of_method_sync(&self.filename, &name.sym);
+            .query_return_type_of_method_sync(self.filename, &name.sym);
 
         let method_types = match method_types {
             Ok(v) => v,
@@ -312,9 +312,9 @@ impl FileCompiler<'_> {
             // Create a record
             self.compiled_method_records.push(MethodRecord {
                 name: name.sym.clone(),
-                config_object_var_name: config_object_name.clone(),
+                config_object_var_name: config_object_name,
                 api_def: Arc::new(ApiFn {
-                    name: name.sym.clone(),
+                    name: name.sym,
                     params: method_types
                         .params
                         .iter()
@@ -445,113 +445,100 @@ impl VisitMut for FileCompiler<'_> {
         n.visit_mut_children_with(self);
 
         if !self.compiled_method_records.is_empty() {
-            match n {
-                ModuleDecl::ExportDefaultDecl(ExportDefaultDecl {
-                    span,
-                    decl: DefaultDecl::Class(cls),
-                }) => {
-                    let wrapper = private_ident!("wrapApiClass");
+            if let ModuleDecl::ExportDefaultDecl(ExportDefaultDecl {
+                span,
+                decl: DefaultDecl::Class(cls),
+            }) = n
+            {
+                let wrapper = private_ident!("wrapApiClass");
 
-                    let wrap_api_class_import =
-                        ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
-                            span: *span,
-                            specifiers: vec![ImportSpecifier::Default(ImportDefaultSpecifier {
-                                span: DUMMY_SP,
-                                local: wrapper.clone().into(),
-                            })],
-                            src: "@fnapi/api/rt/wrapApiClass.js".into(),
-                            type_only: false,
-                            asserts: Default::default(),
-                        }));
-
-                    let wrap_api_config_import =
-                        ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
-                            span: *span,
-                            specifiers: vec![ImportSpecifier::Default(ImportDefaultSpecifier {
-                                span: DUMMY_SP,
-                                local: self.wrap_fnapi_config.clone().unwrap(),
-                            })],
-                            src: "@fnapi/api/rt/wrapFnApiConfig.js".into(),
-                            type_only: false,
-                            asserts: Default::default(),
-                        }));
-
-                    prepend_stmts(
-                        self.stmts_to_prepend,
-                        vec![wrap_api_class_import, wrap_api_config_import].into_iter(),
-                    );
-
-                    *n = ModuleDecl::ExportDefaultExpr(ExportDefaultExpr {
+                let wrap_api_class_import =
+                    ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
                         span: *span,
-                        expr: box Expr::Call(CallExpr {
+                        specifiers: vec![ImportSpecifier::Default(ImportDefaultSpecifier {
                             span: DUMMY_SP,
-                            callee: wrapper.clone().as_callee(),
-                            args: vec![
-                                cls.take().as_arg(),
-                                ArrayLit {
-                                    span: DUMMY_SP,
-                                    elems: self
-                                        .compiled_method_records
-                                        .iter()
-                                        .map(|method_record| ObjectLit {
-                                            span: DUMMY_SP,
-                                            props: vec![
-                                                PropOrSpread::Spread(SpreadElement {
-                                                    dot3_token: DUMMY_SP,
-                                                    expr: box method_record
-                                                        .config_object_var_name
-                                                        .clone()
-                                                        .into(),
-                                                }),
-                                                PropOrSpread::Prop(box Prop::KeyValue(
-                                                    KeyValueProp {
-                                                        key: quote_ident!("name").into(),
-                                                        value: box method_record
-                                                            .name
-                                                            .clone()
-                                                            .into(),
-                                                    },
-                                                )),
-                                                PropOrSpread::Prop(box Prop::KeyValue(
-                                                    KeyValueProp {
-                                                        key: quote_ident!("parameterTypes").into(),
-                                                        value: box ArrayLit {
-                                                            span: DUMMY_SP,
-                                                            elems: method_record
-                                                                .api_def
-                                                                .params
-                                                                .iter()
-                                                                .map(|param| {
-                                                                    param.ty.to_js_expr().as_arg()
-                                                                })
-                                                                .map(Some)
-                                                                .collect(),
-                                                        }
-                                                        .into(),
-                                                    },
-                                                )),
-                                                PropOrSpread::Prop(box Prop::KeyValue(
-                                                    KeyValueProp {
-                                                        key: quote_ident!("returnType").into(),
-                                                        value: method_record
-                                                            .api_def
-                                                            .return_type
-                                                            .to_js_expr(),
-                                                    },
-                                                )),
-                                            ],
-                                        })
-                                        .map(|v| v.as_arg())
-                                        .map(Some)
-                                        .collect(),
-                                }
-                                .as_arg(),
-                            ],
-                            type_args: Default::default(),
-                        }),
-                    });
-                }
-                _ => {}
+                            local: wrapper.clone(),
+                        })],
+                        src: "@fnapi/api/rt/wrapApiClass.js".into(),
+                        type_only: false,
+                        asserts: Default::default(),
+                    }));
+
+                let wrap_api_config_import =
+                    ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
+                        span: *span,
+                        specifiers: vec![ImportSpecifier::Default(ImportDefaultSpecifier {
+                            span: DUMMY_SP,
+                            local: self.wrap_fnapi_config.clone().unwrap(),
+                        })],
+                        src: "@fnapi/api/rt/wrapFnApiConfig.js".into(),
+                        type_only: false,
+                        asserts: Default::default(),
+                    }));
+
+                prepend_stmts(
+                    self.stmts_to_prepend,
+                    vec![wrap_api_class_import, wrap_api_config_import].into_iter(),
+                );
+
+                *n = ModuleDecl::ExportDefaultExpr(ExportDefaultExpr {
+                    span: *span,
+                    expr: box Expr::Call(CallExpr {
+                        span: DUMMY_SP,
+                        callee: wrapper.as_callee(),
+                        args: vec![
+                            cls.take().as_arg(),
+                            ArrayLit {
+                                span: DUMMY_SP,
+                                elems: self
+                                    .compiled_method_records
+                                    .iter()
+                                    .map(|method_record| ObjectLit {
+                                        span: DUMMY_SP,
+                                        props: vec![
+                                            PropOrSpread::Spread(SpreadElement {
+                                                dot3_token: DUMMY_SP,
+                                                expr: box method_record
+                                                    .config_object_var_name
+                                                    .clone()
+                                                    .into(),
+                                            }),
+                                            PropOrSpread::Prop(box Prop::KeyValue(KeyValueProp {
+                                                key: quote_ident!("name").into(),
+                                                value: box method_record.name.clone().into(),
+                                            })),
+                                            PropOrSpread::Prop(box Prop::KeyValue(KeyValueProp {
+                                                key: quote_ident!("parameterTypes").into(),
+                                                value: box ArrayLit {
+                                                    span: DUMMY_SP,
+                                                    elems: method_record
+                                                        .api_def
+                                                        .params
+                                                        .iter()
+                                                        .map(|param| param.ty.to_js_expr().as_arg())
+                                                        .map(Some)
+                                                        .collect(),
+                                                }
+                                                .into(),
+                                            })),
+                                            PropOrSpread::Prop(box Prop::KeyValue(KeyValueProp {
+                                                key: quote_ident!("returnType").into(),
+                                                value: method_record
+                                                    .api_def
+                                                    .return_type
+                                                    .to_js_expr(),
+                                            })),
+                                        ],
+                                    })
+                                    .map(|v| v.as_arg())
+                                    .map(Some)
+                                    .collect(),
+                            }
+                            .as_arg(),
+                        ],
+                        type_args: Default::default(),
+                    }),
+                });
             }
         }
     }
