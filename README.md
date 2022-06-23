@@ -1,5 +1,7 @@
 # fnapi
 
+#![Logo](./logo.svg)
+
 A function is enough.
 
 ## Features
