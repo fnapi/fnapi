@@ -16,6 +16,13 @@
     "test": {
       "dependsOn": ["build"],
       "outputs": []
+    },
+    "build:release:native": {
+      "dependsOn": ["^build:native"],
+      "cache": false
+    },
+    "build:release": {
+      "dependsOn": ["^build:release", "build:release:native", "build:tsc"]
     }
   }
 }
