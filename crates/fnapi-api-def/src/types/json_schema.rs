@@ -166,9 +166,7 @@ impl ToJsonSchema for UnionType {
 
 impl ToJsonSchema for Property {
     fn to_json_schema(&self) -> JsonMap {
-        let v = self.ty.to_json_schema();
-
-        v
+        self.ty.to_json_schema()
     }
 }
 

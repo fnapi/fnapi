@@ -14,6 +14,6 @@ pub struct Env {
 
 impl Env {
     pub fn with<Ret>(&self, op: impl FnOnce() -> Ret) -> Ret {
-        GLOBALS.set(&self.globals, || HANDLER.set(&self.handler, || op()))
+        GLOBALS.set(&self.globals, || HANDLER.set(&self.handler, op))
     }
 }

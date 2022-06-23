@@ -58,7 +58,7 @@ impl JsClientConfig {
                 .functions
                 .iter()
                 .map(|f| {
-                    self.generate_fn(&file, f, &client)
+                    self.generate_fn(file, f, &client)
                         .map(|f| {
                             Prop::Method(MethodProp {
                                 key: f.ident.clone().into(),

@@ -74,7 +74,7 @@ impl Modules {
     pub fn load(&self, path: &Path) -> Result<Arc<Module>> {
         let fm = self
             .cm
-            .load_file(&path)
+            .load_file(path)
             .with_context(|| format!("failed to load file `{}`", path.display()))?;
 
         let key = Arc::new(fm.name.clone());
