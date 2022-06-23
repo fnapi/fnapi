@@ -14,7 +14,9 @@
   },
   "scripts": {
     "prepare": "husky install && git config feature.manyFiles true",
-    "build": "turbo run build:release"
+    "build": "turbo run build:release",
+    "artifacts": "napi artifacts",
+    "prepublishOnly": "napi prepublish -t npm"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
