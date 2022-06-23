@@ -148,7 +148,7 @@ jobs:
         run: yarn config set supportedArchitectures.cpu "ia32"
         shell: bash
       - name: Install dependencies
-        run: yarn install
+        run: pnpm i
       - name: Setup node x86
         uses: actions/setup-node@v3
         if: matrix.settings.target == 'i686-pc-windows-msvc'
@@ -211,7 +211,7 @@ jobs:
             whoami
             env
             freebsd-version
-            yarn install
+            pnpm i
             pnpm build
             strip -x *.node
             yarn test
@@ -252,7 +252,7 @@ jobs:
           path: .yarn/cache
           key: npm-cache-test-${{ matrix.settings.target }}-${{ matrix.node }}
       - name: Install dependencies
-        run: yarn install
+        run: pnpm i
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -289,7 +289,7 @@ jobs:
           path: .yarn/cache
           key: npm-cache-test-linux-x64-gnu-${{ matrix.node }}
       - name: Install dependencies
-        run: yarn install
+        run: pnpm i
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -328,7 +328,7 @@ jobs:
       - name: Install dependencies
         run: |
           yarn config set supportedArchitectures.libc "musl"
-          yarn install
+          pnpm i
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -371,7 +371,7 @@ jobs:
         run: |
           yarn config set supportedArchitectures.cpu "arm64"
           yarn config set supportedArchitectures.libc "glibc"
-          yarn install
+          pnpm i
       - name: Setup and run tests
         uses: addnab/docker-run-action@v3
         with:
@@ -406,7 +406,7 @@ jobs:
         run: |
           yarn config set supportedArchitectures.cpu "arm64"
           yarn config set supportedArchitectures.libc "musl"
-          yarn install
+          pnpm i
       - name: Setup and run tests
         uses: addnab/docker-run-action@v3
         with:
@@ -447,7 +447,7 @@ jobs:
       - name: Install dependencies
         run: |
           yarn config set supportedArchitectures.cpu "arm"
-          yarn install
+          pnpm i
       - name: Setup and run tests
         uses: addnab/docker-run-action@v3
         with:
@@ -484,7 +484,7 @@ jobs:
           restore-keys: |
             npm-cache-
       - name: Install dependencies
-        run: yarn install
+        run: pnpm i
       - name: Download all artifacts
         uses: actions/download-artifact@v3
         with:
