@@ -131,7 +131,7 @@ jobs:
       - name: Install node dependencies
         shell: bash
         run: |
-          pnpm
+          pnpm i
 
       - name: Configure path (windows)
         shell: bash
