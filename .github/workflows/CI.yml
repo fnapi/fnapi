@@ -21,14 +21,13 @@ jobs:
             target: x86_64-apple-darwin
             build: |
               pnpm run --dir ./packages/compiler build:release:native
-              strip -x *.node
+              strip -x packages/compiler/*.node
           - host: windows-latest
             build: pnpm run --dir ./packages/compiler build:release:native
             target: x86_64-pc-windows-msvc
           - host: windows-latest
             build: |
               pnpm run --dir ./packages/compiler build:release:native --target i686-pc-windows-msvc
-              pnpm test
             target: i686-pc-windows-msvc
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -36,11 +35,11 @@ jobs:
             build: |-
               set -e &&
               pnpm run --dir ./packages/compiler build:release:native --target x86_64-unknown-linux-gnu &&
-              strip *.node
+              strip packages/compiler/*.node
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: set -e && pnpm run --dir ./packages/compiler build:release:native && strip *.node
+            build: set -e && pnpm run --dir ./packages/compiler build:release:native && strip packages/compiler/*.node
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
@@ -50,14 +49,16 @@ jobs:
               SYSROOT=$(xcrun --sdk macosx --show-sdk-path);
               export CFLAGS="-isysroot $SYSROOT -isystem $SYSROOT";
               pnpm run --dir ./packages/compiler build:release:native --target aarch64-apple-darwin
-              strip -x *.node
+              strip -x packages/compiler/*.node
           - host: ubuntu-latest
             target: aarch64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
-            build: |-
+            build: >-
               set -e &&
+              rustup target add aarch64-unknown-linux-gnu &&
+              export CC_aarch64_unknown_linux_gnu=/usr/aarch64-unknown-linux-gnu/bin/aarch64-unknown-linux-gnu-gcc &&
               pnpm run --dir ./packages/compiler build:release:native --target aarch64-unknown-linux-gnu &&
-              aarch64-unknown-linux-gnu-strip *.node
+              llvm-strip -x packages/compiler/*.node
           - host: ubuntu-latest
             target: armv7-unknown-linux-gnueabihf
             setup: |
@@ -65,27 +66,27 @@ jobs:
               sudo apt-get install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf -y
             build: |
               pnpm run --dir ./packages/compiler build:release:native --target=armv7-unknown-linux-gnueabihf
-              arm-linux-gnueabihf-strip *.node
-          - host: ubuntu-latest
-            target: aarch64-linux-android
-            build: |
-              export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang"
-              export CC="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang"
-              export CXX="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang++"
-              export AR="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
-              export PATH="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH}"
-              pnpm run --dir ./packages/compiler build:release:native --target aarch64-linux-android
-              ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip *.node
-          - host: ubuntu-latest
-            target: armv7-linux-androideabi
-            build: |
-              export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi24-clang"
-              export CC="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi24-clang"
-              export CXX="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi24-clang++"
-              export AR="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
-              export PATH="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH}"
-              pnpm run --dir ./packages/compiler build:release:native --target armv7-linux-androideabi
-              ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip *.node
+              arm-linux-gnueabihf-strip packages/compiler/*.node
+          # - host: ubuntu-latest
+          #   target: aarch64-linux-android
+          #   build: |
+          #     export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang"
+          #     export CC="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang"
+          #     export CXX="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang++"
+          #     export AR="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
+          #     export PATH="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH}"
+          #     pnpm run --dir ./packages/compiler build:release:native --target aarch64-linux-android
+          #     ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip packages/compiler/*.node
+          # - host: ubuntu-latest
+          #   target: armv7-linux-androideabi
+          #   build: |
+          #     export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi24-clang"
+          #     export CC="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi24-clang"
+          #     export CXX="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi24-clang++"
+          #     export AR="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
+          #     export PATH="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH}"
+          #     pnpm run --dir ./packages/compiler build:release:native --target armv7-linux-androideabi
+          #     ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip packages/compiler/*.node
           - host: ubuntu-latest
             target: aarch64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
@@ -93,7 +94,7 @@ jobs:
               set -e &&
               rustup target add aarch64-unknown-linux-musl &&
               pnpm run --dir ./packages/compiler build:release:native --target aarch64-unknown-linux-musl &&
-              /aarch64-linux-musl-cross/bin/aarch64-linux-musl-strip *.node
+              /aarch64-linux-musl-cross/bin/aarch64-linux-musl-strip packages/compiler/*.node
           - host: windows-latest
             target: aarch64-pc-windows-msvc
             build: pnpm run --dir ./packages/compiler build:release:native --target aarch64-pc-windows-msvc
@@ -170,57 +171,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: ${{ env.APP_NAME }}.*.node
-          if-no-files-found: error
-  build-freebsd:
-    if: ${{ startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/ci' }}
-    runs-on: macos-10.15
-    name: Build FreeBSD
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build
-        id: build
-        uses: vmactions/freebsd-vm@v0.1.6
-        env:
-          DEBUG: napi:*
-          RUSTUP_HOME: /usr/local/rustup
-          CARGO_HOME: /usr/local/cargo
-          RUSTUP_IO_THREADS: 1
-        with:
-          envs: DEBUG RUSTUP_HOME CARGO_HOME RUSTUP_IO_THREADS
-          usesh: true
-          mem: 3000
-          prepare: |
-            pkg install -y curl node14 python2
-            curl -qL https://www.npmjs.com/install.sh | sh
-            npm install -g pnpm
-            curl https://sh.rustup.rs -sSf --output rustup.sh
-            sh rustup.sh -y --profile minimal --default-toolchain nightly
-            export PATH="/usr/local/cargo/bin:$PATH"
-            echo "~~~~ rustc --version ~~~~"
-            rustc --version
-            echo "~~~~ node -v ~~~~"
-            node -v
-            echo "~~~~ pnpm --version ~~~~"
-            pnpm --version
-          run: |
-            export PATH="/usr/local/cargo/bin:$PATH"
-            pwd
-            ls -lah
-            whoami
-            env
-            freebsd-version
-            pnpm i
-            pnpm run --dir ./packages/compiler build:release:native
-            strip -x *.node
-            pnpm test
-            rm -rf node_modules
-            rm -rf target
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: bindings-freebsd
-          path: ${{ env.APP_NAME }}.*.node
+          path: ./packages/compiler/*.node
           if-no-files-found: error
   test-macOS-windows-binding:
     name: Test bindings on ${{ matrix.settings.target }} - node@${{ matrix.node }}
@@ -239,6 +190,9 @@ jobs:
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.3.0
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -261,7 +215,7 @@ jobs:
         run: ls -R .
         shell: bash
       - name: Test bindings
-        run: pnpm test
+        run: npm test
   test-linux-x64-gnu-binding:
     name: Test bindings on Linux-x64-gnu - node@${{ matrix.node }}
     needs:
@@ -276,6 +230,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.3.0
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -298,7 +255,7 @@ jobs:
         run: ls -R .
         shell: bash
       - name: Test bindings
-        run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-slim pnpm test
+        run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-slim npm test
   test-linux-x64-musl-binding:
     name: Test bindings on x86_64-unknown-linux-musl - node@${{ matrix.node }}
     needs:
@@ -313,6 +270,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.3.0
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -337,7 +297,7 @@ jobs:
         run: ls -R .
         shell: bash
       - name: Test bindings
-        run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-alpine pnpm test
+        run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-alpine npm test
   test-linux-aarch64-gnu-binding:
     name: Test bindings on aarch64-unknown-linux-gnu - node@${{ matrix.node }}
     needs:
@@ -353,6 +313,9 @@ jobs:
     steps:
       - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.3.0
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -378,7 +341,7 @@ jobs:
           options: "-v ${{ github.workspace }}:/build -w /build"
           run: |
             set -e
-            pnpm test
+            npm test
             ls -la
   test-linux-aarch64-musl-binding:
     name: Test bindings on aarch64-unknown-linux-musl - node@${{ matrix.node }}
@@ -388,6 +351,9 @@ jobs:
     steps:
       - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.3.0
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -414,7 +380,7 @@ jobs:
           run: |
             set -e
             apk add nodejs npm yarn
-            pnpm test
+            npm test
   test-linux-arm-gnueabihf-binding:
     name: Test bindings on armv7-unknown-linux-gnueabihf - node@${{ matrix.node }}
     needs:
@@ -430,6 +396,9 @@ jobs:
     steps:
       - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.3.0
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -454,13 +423,14 @@ jobs:
           options: "-v ${{ github.workspace }}:/build -w /build"
           run: |
             set -e
-            pnpm test
+            npm test
             ls -la
   publish:
     name: Publish
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     runs-on: ubuntu-latest
     needs:
-      - build-freebsd
+      # - build-freebsd
       - test-macOS-windows-binding
       - test-linux-x64-gnu-binding
       - test-linux-x64-musl-binding

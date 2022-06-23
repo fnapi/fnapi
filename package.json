@@ -14,7 +14,9 @@
   },
   "scripts": {
     "prepare": "husky install && git config feature.manyFiles true",
-    "build": "turbo run build:release"
+    "artifacts": "napi artifacts",
+    "prepublishOnly": "napi prepublish -t npm",
+    "test": "true"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -22,5 +24,20 @@
       "prettier --write"
     ],
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "napi": {
+    "name": "fnapi",
+    "triples": {
+      "defaults": true,
+      "additional": [
+        "x86_64-unknown-linux-musl",
+        "aarch64-unknown-linux-gnu",
+        "i686-pc-windows-msvc",
+        "armv7-unknown-linux-gnueabihf",
+        "aarch64-apple-darwin",
+        "aarch64-unknown-linux-musl",
+        "aarch64-pc-windows-msvc"
+      ]
+    }
   }
 }
