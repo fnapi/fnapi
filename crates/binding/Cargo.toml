@@ -1,0 +1,44 @@
+[package]
+authors = ["강동윤 <kdy1997.dev@gmail.com>"]
+build = "build.rs"
+edition = "2021"
+exclude = ["artifacts.json", "index.node"]
+license = "Apache-2.0"
+name = "binding"
+publish = false
+version = "0.1.0"
+
+[lib]
+bench = false
+crate-type = ["cdylib"]
+
+[build-dependencies]
+napi-build = {version = "1"}
+
+[dependencies]
+anyhow = "1"
+backtrace = "0.3"
+futures = "0.3.21"
+indexmap = {version = "1.8.2", features = ["serde"]}
+napi = {version = "2", default-features = false, features = [
+  "napi5",
+  "serde-json",
+  "tokio_rt",
+]}
+napi-derive = {version = "2", default-features = false, features = [
+  "type-def",
+]}
+serde = {version = "1", features = ["derive"]}
+serde_json = {version = "1", features = ["unbounded_depth"]}
+swc_atoms = "0.2.12"
+swc_cached = "0.1.1"
+swc_common = {version = "0.18.9", features = ["concurrent"]}
+swc_ecma_loader = {version = "0.30.2", features = ["node", "lru", "tsc", "cache"]}
+swc_ecma_parser = "0.105.3"
+swc_error_reporters = "0.2.0"
+swc_nodejs_common = "0.0.1"
+tokio = {version = "1", features = ["sync"]}
+tracing = {version = "0.1.32", features = ["release_max_level_info"]}
+tracing-chrome = "0.5.0"
+tracing-futures = "0.2.5"
+tracing-subscriber = {version = "0.3.11", features = ["env-filter", "fmt"]}
