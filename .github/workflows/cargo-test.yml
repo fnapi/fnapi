@@ -15,7 +15,6 @@ on: [push, pull_request]
 env:
   CARGO_INCREMENTAL: 0
   RUST_LOG: "debug"
-  DIFF: 0
 
 jobs:
   check-license:
