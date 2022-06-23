@@ -60,7 +60,7 @@ jobs:
 
       - uses: pnpm/action-setup@v2.2.2
         with:
-          version: 6.0.2
+          version: 7.3.0
 
       # We explicitly do this to cache properly.
       - name: Install Rust
@@ -111,7 +111,7 @@ jobs:
 
       - uses: pnpm/action-setup@v2.2.2
         with:
-          version: 6.0.2
+          version: 7.3.0
 
       # Source map format
       - uses: actions/setup-node@v3
