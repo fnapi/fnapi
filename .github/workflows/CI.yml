@@ -145,7 +145,7 @@ jobs:
         shell: bash
       - name: Setup node x86
         if: matrix.settings.target == 'i686-pc-windows-msvc'
-        run: yarn config set supportedArchitectures.cpu "ia32"
+        run: pnpm config set supportedArchitectures.cpu "ia32"
         shell: bash
       - name: Install dependencies
         run: pnpm i
@@ -327,7 +327,7 @@ jobs:
           key: npm-cache-test-x86_64-unknown-linux-musl-${{ matrix.node }}
       - name: Install dependencies
         run: |
-          yarn config set supportedArchitectures.libc "musl"
+          pnpm config set supportedArchitectures.libc "musl"
           pnpm i
       - name: Download artifacts
         uses: actions/download-artifact@v3
@@ -369,8 +369,8 @@ jobs:
           key: npm-cache-test-linux-aarch64-gnu-${{ matrix.node }}
       - name: Install dependencies
         run: |
-          yarn config set supportedArchitectures.cpu "arm64"
-          yarn config set supportedArchitectures.libc "glibc"
+          pnpm config set supportedArchitectures.cpu "arm64"
+          pnpm config set supportedArchitectures.libc "glibc"
           pnpm i
       - name: Setup and run tests
         uses: addnab/docker-run-action@v3
@@ -404,8 +404,8 @@ jobs:
           key: npm-cache-test-linux-aarch64-musl-${{ matrix.node }}
       - name: Install dependencies
         run: |
-          yarn config set supportedArchitectures.cpu "arm64"
-          yarn config set supportedArchitectures.libc "musl"
+          pnpm config set supportedArchitectures.cpu "arm64"
+          pnpm config set supportedArchitectures.libc "musl"
           pnpm i
       - name: Setup and run tests
         uses: addnab/docker-run-action@v3
@@ -446,7 +446,7 @@ jobs:
           key: npm-cache-test-linux-arm-gnueabihf-${{ matrix.node }}
       - name: Install dependencies
         run: |
-          yarn config set supportedArchitectures.cpu "arm"
+          pnpm config set supportedArchitectures.cpu "arm"
           pnpm i
       - name: Setup and run tests
         uses: addnab/docker-run-action@v3
