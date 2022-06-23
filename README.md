@@ -1,6 +1,6 @@
 # fnapi
 
-#![Logo](./logo.svg)
+![Logo](./logo.svg)
 
 A function is enough.
 
