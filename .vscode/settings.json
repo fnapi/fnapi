@@ -1,0 +1,19 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/node_modules": true
+    },
+    "editor.formatOnSave": true,
+    "cSpell.words": [
+        "Fastify",
+        "fnapi",
+        "openrpc",
+        "reqwest",
+        "typeserver"
+    ]
+}

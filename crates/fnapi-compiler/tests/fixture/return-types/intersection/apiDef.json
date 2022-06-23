@@ -1,0 +1,50 @@
+{
+  "className": "TestApi",
+  "functions": [
+    {
+      "name": "test",
+      "params": [
+        {
+          "name": null,
+          "ty": {
+            "kind": "keyword",
+            "keyword": "string"
+          }
+        }
+      ],
+      "returnType": {
+        "kind": "intersection",
+        "types": [
+          {
+            "kind": "object",
+            "members": [
+              {
+                "kind": "property",
+                "name": "foo",
+                "type": {
+                  "kind": "keyword",
+                  "keyword": "string"
+                },
+                "optional": false
+              }
+            ]
+          },
+          {
+            "kind": "object",
+            "members": [
+              {
+                "kind": "property",
+                "name": "bar",
+                "type": {
+                  "kind": "keyword",
+                  "keyword": "number"
+                },
+                "optional": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

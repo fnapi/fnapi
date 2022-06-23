@@ -1,0 +1,22 @@
+target/
+**/*.bk
+*.log
+
+.vscode/*
+!.vscode/settings.json
+*.swp
+
+.idea/
+*.iml
+
+.DS_Store
+node_modules/
+
+**/*~
+
+# turborepo
+.turbo
+
+# fnapi
+.fnapi
+*.tsbuildinfo

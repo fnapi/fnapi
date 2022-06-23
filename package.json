@@ -1,0 +1,25 @@
+{
+  "private": true,
+  "devDependencies": {
+    "@babel/core": "^7.18.5",
+    "@babel/eslint-parser": "^7.18.2",
+    "@babel/plugin-syntax-jsx": "^7.17.12",
+    "@babel/plugin-syntax-typescript": "^7.17.12",
+    "eslint": "8.10.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.2",
+    "prettier": "^2.7.1",
+    "turbo": "^1.2.16"
+  },
+  "scripts": {
+    "prepare": "husky install && git config feature.manyFiles true"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "**/*": "prettier --write --ignore-unknown"
+  }
+}

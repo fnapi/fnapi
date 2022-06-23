@@ -1,0 +1,30 @@
+{
+  "className": "TestApi",
+  "functions": [
+    {
+      "name": "test",
+      "params": [
+        {
+          "name": null,
+          "ty": {
+            "kind": "keyword",
+            "keyword": "string"
+          }
+        }
+      ],
+      "returnType": {
+        "kind": "tuple",
+        "elems": [
+          {
+            "kind": "keyword",
+            "keyword": "string"
+          },
+          {
+            "kind": "keyword",
+            "keyword": "number"
+          }
+        ]
+      }
+    }
+  ]
+}

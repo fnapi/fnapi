@@ -1,0 +1,21 @@
+{
+  "className": "TestApi",
+  "functions": [
+    {
+      "name": "test",
+      "params": [
+        {
+          "name": null,
+          "ty": {
+            "kind": "keyword",
+            "keyword": "string"
+          }
+        }
+      ],
+      "returnType": {
+        "kind": "keyword",
+        "keyword": "string"
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@fnapi/api",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "fastify": "^3.27.4"
+  },
+  "type": "module",
+  "scripts": {
+    "build:tsc": "rm -rf **/*.js **/*.d.ts && tsc"
+  }
+}

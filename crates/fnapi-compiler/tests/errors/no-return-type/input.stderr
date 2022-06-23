@@ -1,0 +1,11 @@
+
+  x All API functions should have declared return types
+    ,-[$DIR/tests/errors/no-return-type/input.ts:5:5]
+  5 | ,-> @FnApi()
+  6 | |       static async test(arg1: string) {
+  7 | |           return {
+  8 | |               arg1,
+  9 | |           }
+ 10 | `->     }
+    `----
+  help: This is to prevent mistakenly sending sensitive data to the client

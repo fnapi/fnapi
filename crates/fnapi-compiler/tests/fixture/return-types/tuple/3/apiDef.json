@@ -1,0 +1,63 @@
+{
+  "className": "TestApi",
+  "functions": [
+    {
+      "name": "test",
+      "params": [
+        {
+          "name": null,
+          "ty": {
+            "kind": "keyword",
+            "keyword": "string"
+          }
+        }
+      ],
+      "returnType": {
+        "kind": "tuple",
+        "elems": [
+          {
+            "kind": "object",
+            "members": [
+              {
+                "kind": "property",
+                "name": "foo",
+                "type": {
+                  "kind": "keyword",
+                  "keyword": "string"
+                },
+                "optional": false
+              }
+            ]
+          },
+          {
+            "kind": "keyword",
+            "keyword": "number"
+          },
+          {
+            "kind": "object",
+            "members": [
+              {
+                "kind": "property",
+                "name": "foo",
+                "type": {
+                  "kind": "keyword",
+                  "keyword": "number"
+                },
+                "optional": false
+              },
+              {
+                "kind": "property",
+                "name": "bar",
+                "type": {
+                  "kind": "keyword",
+                  "keyword": "number"
+                },
+                "optional": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
