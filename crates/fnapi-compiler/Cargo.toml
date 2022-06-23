@@ -1,6 +1,7 @@
 [package]
 edition = "2021"
 include = ["Cargo.toml", "src/**/*.rs"]
+license = "Apache-2.0"
 name = "fnapi-compiler"
 publish = false
 version = "0.1.0"
