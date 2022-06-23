@@ -30,51 +30,6 @@ jobs:
         run: |
           cargo deny check
 
-  check:
-    name: Cargo check - ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    if: >-
-      ${{ !contains(github.event.head_commit.message, 'chore: ') }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-10.15
-          - windows-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-
-      - uses: pnpm/action-setup@v2.2.2
-        with:
-          version: 7.3.0
-
-      # We explicitly do this to cache properly.
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-
-      - uses: Swatinem/rust-cache@v1
-        with:
-          sharedKey: "cargo-debug-check"
-          cache-on-failure: true
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-          cache: "pnpm"
-
-      - name: Install node dependencies
-        shell: bash
-        run: |
-          pnpm i
-
-      # Ensure that all components are compilable.
-      - name: Run cargo check for all targets
-        run: cargo check --color always --all --all-targets
   test:
     name: Cargo test - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
