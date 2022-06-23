@@ -14,9 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Disable cargo optimization
-        run: ./scripts/github/disable-debug-opt.sh
-
       # We explicitly do this to cache properly.
       - name: Install Rust
         uses: actions-rs/toolchain@v1
@@ -34,9 +31,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Disable cargo optimization
-        run: ./scripts/github/disable-debug-opt.sh
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
