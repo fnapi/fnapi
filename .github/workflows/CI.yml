@@ -190,6 +190,9 @@ jobs:
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.3.0
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -227,6 +230,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.3.0
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -264,6 +270,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.3.0
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -304,6 +313,9 @@ jobs:
     steps:
       - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.3.0
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -339,6 +351,9 @@ jobs:
     steps:
       - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.3.0
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -381,6 +396,9 @@ jobs:
     steps:
       - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.3.0
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
