@@ -28,6 +28,7 @@ jobs:
           - host: windows-latest
             build: |
               pnpm run --dir ./packages/compiler build:release:native --target i686-pc-windows-msvc
+              pnpm i
               pnpm test
             target: i686-pc-windows-msvc
           - host: ubuntu-latest
