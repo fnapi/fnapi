@@ -5,16 +5,19 @@
         "**/.hg": true,
         "**/CVS": true,
         "**/.DS_Store": true,
-        "**/Thumbs.db": true,
-        "**/node_modules": true
+        "**/*.bk": true,
+        "**/node_modules": true,
+        "**/target": true
+    },
+    "[rust]": {
+        "editor.formatOnSave": true
+    },
+    "[typescript]": {
+        "editor.formatOnSave": true
     },
     "editor.formatOnSave": true,
-    "cSpell.words": [
-        "Fastify",
-        "fnapi",
-        "openrpc",
-        "pnpm",
-        "reqwest",
-        "typeserver"
-    ]
+    "git.ignoreLimitWarning": true,
+    "git.autoRepositoryDetection": false,
+    "eslint.enable": false,
+    "rust-analyzer.checkOnSave.command": "clippy",
 }
