@@ -16,7 +16,7 @@
     "prepare": "husky install && git config feature.manyFiles true",
     "artifacts": "napi artifacts",
     "prepublishOnly": "napi prepublish -t npm",
-    "test": "turbo run test"
+    "test": "true"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
