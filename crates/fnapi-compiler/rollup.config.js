@@ -6,7 +6,7 @@ import json from "@rollup/plugin-json";
 export default {
     input: 'src/type_server/index.ts',
     output: {
-        file: 'bundle.js',
+        file: 'type-server.js',
     },
     external: ['ts-morph'],
     plugins: [typescript(), nodeResolve(), commonjs(), json()]
