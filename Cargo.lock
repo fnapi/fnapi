@@ -537,6 +537,8 @@ dependencies = [
  "fnapi-compiler",
  "fnapi-core",
  "fnapi-testing",
+ "swc_common",
+ "swc_error_reporters",
  "tokio",
 ]
 
