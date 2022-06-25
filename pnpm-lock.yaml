@@ -32,6 +32,7 @@ importers:
       '@open-rpc/schema-utils-js': ^1.16.1
       '@open-rpc/server-js': ^1.9.3
       '@rollup/plugin-commonjs': ^22.0.1
+      '@rollup/plugin-json': ^4.1.0
       '@rollup/plugin-node-resolve': ^13.3.0
       '@rollup/plugin-typescript': ^8.3.3
       expect: ^27.5.1
@@ -46,6 +47,7 @@ importers:
       '@open-rpc/meta-schema': 1.14.2
       '@open-rpc/schema-utils-js': 1.16.1
       '@rollup/plugin-commonjs': 22.0.1_rollup@2.75.7
+      '@rollup/plugin-json': 4.1.0_rollup@2.75.7
       '@rollup/plugin-typescript': 8.3.3_okefoyb4o5sittgqayreuhurei
       expect: 27.5.1
       mocha: 9.2.2
@@ -668,6 +670,15 @@ packages:
       is-reference: 1.2.1
       magic-string: 0.25.9
       resolve: 1.22.1
+      rollup: 2.75.7
+    dev: true
+
+  /@rollup/plugin-json/4.1.0_rollup@2.75.7:
+    resolution: {integrity: sha512-yfLbTdNS6amI/2OpmbiBoW12vngr5NW2jCJVZSBEz+H5KfUJZ2M7sDjk0U6GOOdCWFVScShte29o9NezJ53TPw==}
+    peerDependencies:
+      rollup: ^1.20.0 || ^2.0.0
+    dependencies:
+      '@rollup/pluginutils': 3.1.0_rollup@2.75.7
       rollup: 2.75.7
     dev: true
 
