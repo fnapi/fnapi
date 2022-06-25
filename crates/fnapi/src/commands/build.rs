@@ -1,4 +1,4 @@
-use std::{path::PathBuf, sync::Arc};
+use std::{fs::create_dir_all, path::PathBuf, sync::Arc};
 
 use anyhow::{Context, Error, Result};
 use clap::{ArgEnum, Parser};
@@ -25,6 +25,10 @@ pub(crate) struct BuildCommand {
     /// Directory to use for generated client api.
     #[clap(long, short = 'd')]
     client_target_dir: Option<PathBuf>,
+
+    /// FnApi directory for printing the api definition. Defaults to `.fnapi`
+    #[clap(long)]
+    fnapi_dir: Option<PathBuf>,
 }
 
 #[derive(ArgEnum, Debug, Clone, Copy, PartialEq, Eq)]
@@ -35,6 +39,10 @@ pub(crate) enum ClientType {
 
 impl BuildCommand {
     pub async fn run(self, env: &Env) -> Result<()> {
+        let fnapi_dir = self.fnapi_dir.unwrap_or_else(|| PathBuf::from(".fnapi"));
+
+        create_dir_all(&fnapi_dir).context("failed to create fnapi directory")?;
+
         let project = ProjectConfig {
             input: Arc::new(InputFiles::TsConfig("tsconfig.json".into())),
         }
