@@ -19,6 +19,9 @@ napi-build = {version = "1"}
 anyhow = "1"
 backtrace = "0.3"
 clap = "3"
+fnapi = {path = "../fnapi"}
+fnapi-compiler = {path = "../fnapi-compiler"}
+fnapi-core = {path = "../fnapi-core"}
 futures = "0.3.21"
 indexmap = {version = "1.8.2", features = ["serde"]}
 napi = {version = "2", default-features = false, features = [
