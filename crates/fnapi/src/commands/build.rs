@@ -1,6 +1,6 @@
 use std::{path::PathBuf, sync::Arc};
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 use clap::{ArgEnum, Parser};
 use fnapi_compiler::project::{InputFiles, ProjectConfig};
 use fnapi_core::Env;
@@ -34,7 +34,8 @@ impl BuildCommand {
             input: Arc::new(InputFiles::TsConfig("tsconfig.json".into())),
         }
         .resolve(env)
-        .await?;
+        .await
+        .context("failed to resolve project")?;
 
         Ok(())
     }
