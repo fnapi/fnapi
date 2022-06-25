@@ -31,6 +31,7 @@ impl TypeServer {
         let mut cmd = Command::new("node");
         // Stdin
         cmd.arg("-");
+        cmd.arg("--input-type=module");
 
         cmd.stdin(Stdio::piped());
 
@@ -57,8 +58,9 @@ impl TypeServer {
         let mut process = cmd.spawn().context("failed to spawn typeserver")?;
 
         {
-            let child_stdin = process.stdin.as_mut().unwrap();
+            let mut child_stdin = process.stdin.take().unwrap();
             child_stdin.write_all(TYPE_SERVER_CODE.as_bytes())?;
+            drop(child_stdin);
         }
 
         let client = jsonrpc_client_transports::transports::http::connect::<RawClient>(&format!(
