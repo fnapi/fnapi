@@ -1,5 +1,5 @@
 use std::{
-    process::{Child, Command},
+    process::{Child, Command, Stdio},
     sync::Arc,
     time::Duration,
 };
@@ -28,8 +28,10 @@ const TYPE_SERVER_CODE: &str = include_str!("../../type-server.js");
 impl TypeServer {
     pub async fn start(input: &InputFiles) -> Result<Arc<Self>> {
         let mut cmd = Command::new("node");
-        cmd.arg("-e");
-        cmd.arg(TYPE_SERVER_CODE);
+        // Stdin
+        cmd.arg("-");
+
+        cmd.stdin(Stdio::piped());
 
         let port = thread_rng().gen_range::<u16, _>(40000..60000);
         cmd.env("PORT", port.to_string());
@@ -51,7 +53,12 @@ impl TypeServer {
 
         info!(port = port, "Starting type server");
 
-        let process = cmd.spawn().context("failed to spawn typeserver")?;
+        let mut process = cmd.spawn().context("failed to spawn typeserver")?;
+
+        {
+            let child_stdin = process.stdin.as_mut().unwrap();
+            child_stdin.write_all(TYPE_SERVER_CODE)?;
+        }
 
         let client = jsonrpc_client_transports::transports::http::connect::<RawClient>(&format!(
             "http://localhost:{}",

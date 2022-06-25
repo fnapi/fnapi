@@ -1,5 +1,5 @@
 mod valid {
-    use std::{path::Path, sync::Arc};
+    use std::sync::Arc;
 
     use fnapi_api_def::types::{KeywordType, Type};
     use fnapi_testing::{run_async_test, swc_handler::HandlerOpts};
