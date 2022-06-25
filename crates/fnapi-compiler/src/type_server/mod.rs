@@ -31,7 +31,6 @@ impl TypeServer {
         let mut cmd = Command::new("node");
         // Stdin
         cmd.arg("-");
-        cmd.arg("--input-type=module");
 
         cmd.stdin(Stdio::piped());
 
