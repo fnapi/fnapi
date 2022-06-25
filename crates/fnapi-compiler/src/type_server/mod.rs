@@ -1,7 +1,8 @@
 use std::{
+    io::Write,
     process::{Child, Command, Stdio},
     sync::Arc,
-    time::Duration, io::Write,
+    time::Duration,
 };
 
 use anyhow::{anyhow, Context, Result};
@@ -57,7 +58,7 @@ impl TypeServer {
 
         {
             let child_stdin = process.stdin.as_mut().unwrap();
-            child_stdin.write_all(TYPE_SERVER_CODE)?;
+            child_stdin.write_all(TYPE_SERVER_CODE.as_bytes())?;
         }
 
         let client = jsonrpc_client_transports::transports::http::connect::<RawClient>(&format!(
