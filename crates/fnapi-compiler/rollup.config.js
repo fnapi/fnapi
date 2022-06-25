@@ -1,4 +1,5 @@
 import typescript from '@rollup/plugin-typescript';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 
 export default {
@@ -7,5 +8,5 @@ export default {
         file: 'bundle.js',
         format: 'cjs'
     },
-    plugins: [typescript()]
+    plugins: [typescript(), nodeResolve()]
 };
