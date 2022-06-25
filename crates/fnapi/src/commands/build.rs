@@ -34,7 +34,7 @@ impl BuildCommand {
             input: Arc::new(InputFiles::TsConfig("tsconfig.json".into())),
             type_server_script_path: "src/type_server/index.js".into(),
         }
-        .resolve(&env)
+        .resolve(env)
         .await?;
 
         Ok(())
