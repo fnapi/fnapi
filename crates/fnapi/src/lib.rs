@@ -4,7 +4,7 @@ use clap::{Parser, Subcommand};
 
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
-struct Args {
+pub struct Args {
     #[clap(subcommand)]
     cmd: Command,
 }
@@ -15,6 +15,11 @@ enum Command {
     Serve(commands::ServeCommand),
 }
 
-fn main() {
-    let _args = Args::parse();
+impl Args {
+    pub fn run(self) -> anyhow::Result<()> {
+        match self.cmd {
+            Command::Compile(_) => todo!(),
+            Command::Serve(_) => todo!(),
+        }
+    }
 }
