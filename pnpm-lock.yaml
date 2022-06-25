@@ -88,9 +88,11 @@ importers:
   packages/compiler:
     specifiers:
       '@napi-rs/cli': ^2.10.0
+      '@types/node': ^18.0.0
       typescript: ^4.6.2
     devDependencies:
       '@napi-rs/cli': 2.10.0
+      '@types/node': 18.0.0
       typescript: 4.7.4
 
 packages:
