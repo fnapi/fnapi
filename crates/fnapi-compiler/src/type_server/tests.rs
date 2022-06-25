@@ -13,10 +13,9 @@ mod valid {
     /// Create a [TypeServer] for valid typescript types using typescript files
     /// in tests/type_server/valid
     async fn start() -> Arc<TypeServer> {
-        TypeServer::start(
-            Path::new("src/type_server/index.js"),
-            &InputFiles::Files(vec!["tests/type_server/valid/simple.ts".into()]),
-        )
+        TypeServer::start(&InputFiles::Files(vec!["tests/type_server/valid/simple.\
+                                                   ts"
+        .into()]))
         .await
         .unwrap()
     }
