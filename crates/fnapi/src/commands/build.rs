@@ -66,7 +66,7 @@ impl BuildCommand {
 
         yield_now().await;
 
-        let files = join_all(handles)
+        let _files = join_all(handles)
             .await
             .into_iter()
             .collect::<Result<Result<Vec<_>>, _>>()??;
