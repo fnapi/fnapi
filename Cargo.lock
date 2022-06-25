@@ -537,6 +537,7 @@ dependencies = [
  "fnapi-compiler",
  "fnapi-core",
  "fnapi-testing",
+ "futures 0.3.21",
  "rayon",
  "swc_common",
  "swc_error_reporters",
