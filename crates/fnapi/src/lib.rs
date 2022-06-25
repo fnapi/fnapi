@@ -16,10 +16,10 @@ enum Command {
 }
 
 impl Args {
-    pub fn run(self) -> anyhow::Result<()> {
+    pub async fn run(self) -> anyhow::Result<()> {
         match self.cmd {
-            Command::Build(cmd) => cmd.run(),
-            Command::Serve(cmd) => cmd.run(),
+            Command::Build(cmd) => cmd.run().await,
+            Command::Serve(cmd) => cmd.run().await,
         }
     }
 }

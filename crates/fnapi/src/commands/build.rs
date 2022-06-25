@@ -27,7 +27,7 @@ pub(crate) enum ClientType {
 }
 
 impl BuildCommand {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         todo!()
     }
 }

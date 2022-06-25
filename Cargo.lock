@@ -537,6 +537,7 @@ dependencies = [
  "fnapi-compiler",
  "fnapi-core",
  "fnapi-testing",
+ "tokio",
 ]
 
 [[package]]
