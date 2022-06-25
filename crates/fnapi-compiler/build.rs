@@ -5,6 +5,8 @@ fn main() {
     println!("cargo:rerun-if-changed=src/**/*.ts");
 
     let status = Command::new("npx").arg("tsc").status().unwrap();
+    assert!(status.success());
 
+    let status = Command::new("npx").arg("rollup").status().unwrap();
     assert!(status.success());
 }
