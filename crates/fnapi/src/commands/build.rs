@@ -1,5 +1,6 @@
 use std::path::PathBuf;
 
+use anyhow::Result;
 use clap::{ArgEnum, Parser};
 
 /// Build functions as a server and generate client sdk.
@@ -23,4 +24,10 @@ pub(crate) struct BuildCommand {
 pub(crate) enum ClientType {
     /// Typescript
     Web,
+}
+
+impl BuildCommand {
+    pub fn run(self) -> Result<()> {
+        todo!()
+    }
 }

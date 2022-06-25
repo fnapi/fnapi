@@ -6,3 +6,9 @@ pub(crate) struct ServeCommand {
     #[clap(long, short = 'p', default_value = "4321")]
     port: usize,
 }
+
+impl ServeCommand {
+    pub fn run(self) -> Result<()> {
+        todo!()
+    }
+}

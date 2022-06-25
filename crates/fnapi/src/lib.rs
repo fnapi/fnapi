@@ -18,8 +18,8 @@ enum Command {
 impl Args {
     pub fn run(self) -> anyhow::Result<()> {
         match self.cmd {
-            Command::Compile(_) => todo!(),
-            Command::Serve(_) => todo!(),
+            Command::Compile(cmd) => cmd.run(),
+            Command::Serve(cmd) => cmd.run(),
         }
     }
 }
