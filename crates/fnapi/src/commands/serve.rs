@@ -1,5 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
+use fnapi_core::Env;
 
 /// Start a development server
 #[derive(Parser, Debug)]

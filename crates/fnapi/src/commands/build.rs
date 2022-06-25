@@ -2,7 +2,7 @@ use std::{path::PathBuf, sync::Arc};
 
 use anyhow::Result;
 use clap::{ArgEnum, Parser};
-use fnapi_compiler::project::ProjectConfig;
+use fnapi_compiler::project::{ProjectConfig, InputFiles};
 use fnapi_core::Env;
 
 /// Build functions as a server and generate client sdk.
