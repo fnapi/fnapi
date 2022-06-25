@@ -9,7 +9,7 @@ pub(crate) struct ServeCommand {
 }
 
 impl ServeCommand {
-    pub async fn run(self) -> Result<()> {
+    pub async fn run(self, env: &Env) -> Result<()> {
         todo!()
     }
 }

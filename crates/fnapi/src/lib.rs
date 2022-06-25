@@ -48,8 +48,8 @@ impl Args {
         };
 
         match self.cmd {
-            Command::Build(cmd) => cmd.run().await,
-            Command::Serve(cmd) => cmd.run().await,
+            Command::Build(cmd) => cmd.run(&env).await,
+            Command::Serve(cmd) => cmd.run(&env).await,
         }
     }
 }

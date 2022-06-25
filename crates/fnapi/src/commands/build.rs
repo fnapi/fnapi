@@ -1,7 +1,9 @@
-use std::path::PathBuf;
+use std::{path::PathBuf, sync::Arc};
 
 use anyhow::Result;
 use clap::{ArgEnum, Parser};
+use fnapi_compiler::project::ProjectConfig;
+use fnapi_core::Env;
 
 /// Build functions as a server and generate client sdk.
 #[derive(Parser, Debug)]
@@ -27,7 +29,14 @@ pub(crate) enum ClientType {
 }
 
 impl BuildCommand {
-    pub async fn run(self) -> Result<()> {
-        todo!()
+    pub async fn run(self, env: &Env) -> Result<()> {
+        let project = ProjectConfig {
+            input: Arc::new(InputFiles::Files(vec![input.clone()])),
+            type_server_script_path: "src/type_server/index.js".into(),
+        }
+        .resolve(&env)
+        .await?;
+
+        Ok(())
     }
 }
