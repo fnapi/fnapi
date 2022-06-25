@@ -7,6 +7,10 @@ fn main() {
     let status = Command::new("npx").arg("tsc").status().unwrap();
     assert!(status.success());
 
-    let status = Command::new("npx").arg("rollup").status().unwrap();
+    let status = Command::new("npx")
+        .arg("rollup")
+        .arg("-c")
+        .status()
+        .unwrap();
     assert!(status.success());
 }
