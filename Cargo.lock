@@ -163,6 +163,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "backtrace",
+ "clap",
  "futures 0.3.21",
  "indexmap",
  "napi",
