@@ -1,6 +1,6 @@
 use std::{
-    path::Path,
-    process::{Child, Command},
+    io::Write,
+    process::{Child, Command, Stdio},
     sync::Arc,
     time::Duration,
 };
@@ -24,10 +24,15 @@ pub(crate) struct TypeServer {
     client: RawClient,
 }
 
+const TYPE_SERVER_CODE: &str = include_str!("../../type-server.js");
+
 impl TypeServer {
-    pub async fn start(server_script_path: &Path, input: &InputFiles) -> Result<Arc<Self>> {
+    pub async fn start(input: &InputFiles) -> Result<Arc<Self>> {
         let mut cmd = Command::new("node");
-        cmd.arg(server_script_path);
+        // Stdin
+        cmd.arg("-");
+
+        cmd.stdin(Stdio::piped());
 
         let port = thread_rng().gen_range::<u16, _>(40000..60000);
         cmd.env("PORT", port.to_string());
@@ -49,7 +54,13 @@ impl TypeServer {
 
         info!(port = port, "Starting type server");
 
-        let process = cmd.spawn().context("failed to spawn typeserver")?;
+        let mut process = cmd.spawn().context("failed to spawn typeserver")?;
+
+        {
+            let mut child_stdin = process.stdin.take().unwrap();
+            child_stdin.write_all(TYPE_SERVER_CODE.as_bytes())?;
+            drop(child_stdin);
+        }
 
         let client = jsonrpc_client_transports::transports::http::connect::<RawClient>(&format!(
             "http://localhost:{}",

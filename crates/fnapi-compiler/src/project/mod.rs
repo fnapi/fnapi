@@ -58,10 +58,8 @@ pub struct ProjectConfig {
 impl ProjectConfig {
     #[tracing::instrument(name = "ProjectConfig::resolve", skip_all)]
     pub async fn resolve(&self, env: &Env) -> Result<Arc<Project>> {
-        let (type_server, files) = try_join!(
-            TypeServer::start(&self.type_server_script_path, &self.input),
-            self.input.to_files()
-        )?;
+        let (type_server, files) =
+            try_join!(TypeServer::start(&self.input), self.input.to_files())?;
         let files = Arc::new(files);
 
         let modules = env.with(|| Modules::new(env.cm.clone()));

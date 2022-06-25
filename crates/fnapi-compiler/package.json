@@ -7,12 +7,17 @@
   "devDependencies": {
     "@open-rpc/meta-schema": "^1.14.2",
     "@open-rpc/schema-utils-js": "^1.16.1",
+    "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-typescript": "^8.3.3",
     "expect": "^27.5.1",
     "mocha": "^9.2.2",
+    "rollup": "^2.75.7",
     "ts-morph": "^14.0.0",
     "typescript": "^4.6.2"
   },
   "dependencies": {
-    "@open-rpc/server-js": "^1.9.3"
+    "@open-rpc/server-js": "^1.9.3",
+    "@rollup/plugin-node-resolve": "^13.3.0"
   }
 }

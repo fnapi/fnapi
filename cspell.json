@@ -3,6 +3,7 @@
         "fnapi",
         "msvc",
         "pnpm",
+        "rollup",
         "typeserver"
     ]
 }
