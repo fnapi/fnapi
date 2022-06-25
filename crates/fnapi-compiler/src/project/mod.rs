@@ -52,7 +52,6 @@ impl InputFiles {
 #[derive(Debug, Clone)]
 pub struct ProjectConfig {
     pub input: Arc<InputFiles>,
-    pub type_server_script_path: PathBuf,
 }
 
 impl ProjectConfig {

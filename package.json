@@ -10,6 +10,7 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.2",
     "prettier": "^2.7.1",
+    "ts-morph": "^14.0.0",
     "turbo": "^1.2.16"
   },
   "scripts": {

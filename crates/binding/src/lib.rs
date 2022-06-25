@@ -9,6 +9,7 @@ use std::{env, panic::set_hook};
 
 use backtrace::Backtrace;
 
+mod cli;
 mod util;
 
 #[napi::module_init]

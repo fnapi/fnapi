@@ -27,7 +27,6 @@ fn compile(input: PathBuf) {
         |env| async move {
             let project = ProjectConfig {
                 input: Arc::new(InputFiles::Files(vec![input.clone()])),
-                type_server_script_path: "src/type_server/index.js".into(),
             }
             .resolve(&env)
             .await?;
@@ -99,7 +98,6 @@ fn errors(input: PathBuf) {
         |env| async move {
             let project = ProjectConfig {
                 input: Arc::new(InputFiles::Files(vec![input.clone()])),
-                type_server_script_path: "src/type_server/index.js".into(),
             }
             .resolve(&env)
             .await?;

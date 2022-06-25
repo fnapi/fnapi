@@ -163,6 +163,10 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "backtrace",
+ "clap",
+ "fnapi",
+ "fnapi-compiler",
+ "fnapi-core",
  "futures 0.3.21",
  "indexmap",
  "napi",
@@ -533,6 +537,11 @@ dependencies = [
  "fnapi-compiler",
  "fnapi-core",
  "fnapi-testing",
+ "futures 0.3.21",
+ "rayon",
+ "swc_common",
+ "swc_error_reporters",
+ "tokio",
 ]
 
 [[package]]

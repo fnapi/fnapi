@@ -31,7 +31,6 @@ fn exec(tsconfig_json: PathBuf) {
         |env| async move {
             let project = ProjectConfig {
                 input: Arc::new(InputFiles::TsConfig(tsconfig_json)),
-                type_server_script_path: "src/type_server/index.js".into(),
             }
             .resolve(&env)
             .await?;

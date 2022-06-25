@@ -6,15 +6,19 @@
   "private": true,
   "devDependencies": {
     "@napi-rs/cli": "^2.10.0",
+    "@types/node": "^18.0.0",
     "typescript": "^4.6.2"
   },
-  "type": "module",
   "scripts": {
+    "build:tsc": "tsc",
     "build:native": "napi build --platform --cargo-name binding --js ./binding.js --dts ./binding.d.ts -p binding --cargo-cwd ../../",
     "build:release:native": "pnpm run build:native --release"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
+  },
+  "bin": {
+    "fnapi": "./bin/cli.js"
   }
 }
