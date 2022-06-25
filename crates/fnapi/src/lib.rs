@@ -11,14 +11,14 @@ pub struct Args {
 
 #[derive(Subcommand, Debug)]
 enum Command {
-    Compile(commands::BuildCommand),
+    Build(commands::BuildCommand),
     Serve(commands::ServeCommand),
 }
 
 impl Args {
     pub fn run(self) -> anyhow::Result<()> {
         match self.cmd {
-            Command::Compile(cmd) => cmd.run(),
+            Command::Build(cmd) => cmd.run(),
             Command::Serve(cmd) => cmd.run(),
         }
     }
