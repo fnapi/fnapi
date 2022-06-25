@@ -1,9 +1,14 @@
 use std::{path::PathBuf, sync::Arc};
 
-use anyhow::{Context, Result};
+use anyhow::{Context, Error, Result};
 use clap::{ArgEnum, Parser};
-use fnapi_compiler::project::{InputFiles, ProjectConfig};
+use fnapi_compiler::{
+    project::{InputFiles, ProjectConfig},
+    ServerApiFile,
+};
 use fnapi_core::Env;
+use futures::future::join_all;
+use tokio::{spawn, task::yield_now};
 
 /// Build functions as a server and generate client sdk.
 #[derive(Parser, Debug)]
@@ -36,6 +41,27 @@ impl BuildCommand {
         .resolve(env)
         .await
         .context("failed to resolve project")?;
+
+        let mut handles = vec![];
+
+        for file in project.files.iter().cloned() {
+            let project = project.clone();
+            let env = env.clone();
+
+            handles.push(spawn(async move {
+                let m = ServerApiFile::from_file(file.clone())?;
+                let (module, api_file) = m.process(&env, project).await?;
+
+                Ok::<_, Error>((file, module, api_file))
+            }));
+        }
+
+        yield_now().await;
+
+        let files = join_all(handles)
+            .await
+            .into_iter()
+            .collect::<Result<Result<Vec<_>>, _>>()??;
 
         Ok(())
     }
