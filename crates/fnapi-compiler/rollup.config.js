@@ -8,9 +8,6 @@ export default {
     output: {
         file: 'bundle.js',
     },
-    external: ['typescript'],
-    plugins: [typescript(), nodeResolve({
-        dedupe: ['typescript'],
-        resolveOnly: module => !module.includes('typescript'),
-    }), commonjs(), json()]
+    external: ['ts-morph'],
+    plugins: [typescript(), nodeResolve(), commonjs(), json()]
 };
