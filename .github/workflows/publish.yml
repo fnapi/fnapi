@@ -34,13 +34,13 @@ jobs:
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
             build: |-
               set -e &&
-              pnpm i &&
+              pnpm i --ignore-scripts &&
               pnpm run --dir ./packages/compiler build:release:native --target x86_64-unknown-linux-gnu &&
               strip packages/compiler/*.node
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: set -e && pnpm i && pnpm run --dir ./packages/compiler build:release:native && strip packages/compiler/*.node
+            build: set -e && pnpm i --ignore-scripts && pnpm run --dir ./packages/compiler build:release:native && strip packages/compiler/*.node
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
@@ -56,7 +56,7 @@ jobs:
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
             build: >-
               set -e &&
-              pnpm i &&
+              pnpm i --ignore-scripts &&
               rustup target add aarch64-unknown-linux-gnu &&
               export CC_aarch64_unknown_linux_gnu=/usr/aarch64-unknown-linux-gnu/bin/aarch64-unknown-linux-gnu-gcc &&
               pnpm run --dir ./packages/compiler build:release:native --target aarch64-unknown-linux-gnu &&
@@ -94,7 +94,7 @@ jobs:
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
             build: |-
               set -e &&
-              pnpm i &&
+              pnpm i --ignore-scripts &&
               rustup target add aarch64-unknown-linux-musl &&
               pnpm run --dir ./packages/compiler build:release:native --target aarch64-unknown-linux-musl &&
               /aarch64-linux-musl-cross/bin/aarch64-linux-musl-strip packages/compiler/*.node
