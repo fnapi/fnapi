@@ -16,6 +16,8 @@ use fnapi_compiler::{
 use fnapi_core::Env;
 use futures::future::join_all;
 use rayon::prelude::*;
+use swc_common::SourceMap;
+use swc_ecmascript::{ast::Module, codegen::text_writer::JsWriter};
 use tokio::{spawn, task::yield_now};
 
 /// Build functions as a server and generate client sdk.
