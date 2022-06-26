@@ -1,8 +1,13 @@
-use std::{fs::create_dir_all, path::PathBuf, sync::Arc};
+use std::{
+    fs::{create_dir_all, write},
+    path::PathBuf,
+    sync::Arc,
+};
 
 use anyhow::{bail, Context, Error, Result};
 use clap::{ArgEnum, Parser};
 use fnapi_api_def::ProjectApis;
+use fnapi_client_gen::JsTargetEnv;
 use fnapi_compiler::{
     project::{InputFiles, ProjectConfig},
     target::{AwsLambda, Native, NextJs, ServerTarget, ServerlessService},
@@ -118,6 +123,29 @@ impl BuildCommand {
 
         let project_apis = ProjectApis { files: file_apis };
 
+        {
+            let node_client = print(
+                env.cm.clone(),
+                fnapi_client_gen::JsClientConfig {
+                    target_env: JsTargetEnv::NodeJs,
+                }
+                .generate(&env, &project_apis)?,
+            );
+            write(&fnapi_dir.join("client.node.mjs"), node_client.as_bytes())
+                .context("failed to write node client")?;
+        }
+
+        {
+            let web_client = print(
+                env.cm.clone(),
+                fnapi_client_gen::JsClientConfig {
+                    target_env: JsTargetEnv::Web,
+                }
+                .generate(&env, &project_apis)?,
+            );
+            write(&fnapi_dir.join("client.web.mjs"), web_client.as_bytes())
+                .context("failed to write web client")?;
+        }
         Ok(())
     }
 }
@@ -142,4 +170,21 @@ fn expand_dir(p: PathBuf) -> Result<Vec<PathBuf>> {
     } else {
         Ok(vec![p])
     }
+}
+
+fn print(cm: Arc<SourceMap>, m: &Module) -> String {
+    let mut buf = vec![];
+
+    {
+        let mut emitter = swc_ecmascript::codegen::Emitter {
+            cfg: Default::default(),
+            cm: cm.clone(),
+            comments: None,
+            wr: JsWriter::new(cm, "\n", &mut buf, None),
+        };
+
+        emitter.emit_module(m).unwrap();
+    }
+
+    String::from_utf8(buf).unwrap()
 }
