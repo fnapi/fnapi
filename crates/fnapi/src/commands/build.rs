@@ -128,7 +128,7 @@ impl BuildCommand {
         {
             let node_client = print(
                 env.cm.clone(),
-                fnapi_client_gen::JsClientConfig {
+                &fnapi_client_gen::JsClientConfig {
                     target_env: JsTargetEnv::NodeJs,
                 }
                 .generate(&env, &project_apis),
@@ -140,10 +140,10 @@ impl BuildCommand {
         {
             let web_client = print(
                 env.cm.clone(),
-                fnapi_client_gen::JsClientConfig {
+                &fnapi_client_gen::JsClientConfig {
                     target_env: JsTargetEnv::Web,
                 }
-                .generate(&env, &project_apis),
+                .generate(&env, &project_apis)?,
             );
             write(&fnapi_dir.join("client.web.mjs"), web_client.as_bytes())
                 .context("failed to write web client")?;
