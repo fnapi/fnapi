@@ -19,7 +19,7 @@ impl Env {
 }
 
 /// Any kind of implementation.
-pub trait Identifiable: Send + Sync {
+pub trait HasId: Send + Sync {
     fn id(&self) -> Cow<'static, str>;
 
     fn name(&self) -> Cow<'static, str>;
