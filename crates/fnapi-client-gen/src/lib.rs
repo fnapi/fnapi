@@ -46,40 +46,43 @@ impl JsClientConfig {
                 asserts: Default::default(),
             }));
 
-            let body = project
+            let mut body = project
                 .files
                 .par_iter()
-                .map(|v| self.generate_file(env, v, &client))
+                .map(|v| {
+                    self.generate_file(env, v, &client)
+                        .map(ModuleDecl::ExportDecl)
+                        .map(ModuleItem::ModuleDecl)
+                })
                 .collect::<Result<Vec<_>>>()?;
 
-            let expr = box Expr::Object(ObjectLit {
-                span: DUMMY_SP,
-                props: body,
-            });
-
-            let export = ModuleItem::ModuleDecl(ModuleDecl::ExportDefaultExpr(ExportDefaultExpr {
-                span: DUMMY_SP,
-                expr,
-            }));
+            body.insert(0, import);
 
             Ok(Module {
                 span: DUMMY_SP,
-                body: vec![import, export],
+                body,
                 shebang: Default::default(),
             })
         })
     }
 
-    fn generate_file(
-        &self,
-        env: &Env,
-        file: &Arc<ApiFile>,
-        client: &Ident,
-    ) -> Result<PropOrSpread> {
-        Ok(PropOrSpread::Prop(box Prop::KeyValue(KeyValueProp {
-            key: PropName::Ident(Ident::new(file.class_name.clone(), DUMMY_SP)),
-            value: box Expr::Object(self.generate_object_for_file(env, file, client)?),
-        })))
+    fn generate_file(&self, env: &Env, file: &Arc<ApiFile>, client: &Ident) -> Result<ExportDecl> {
+        Ok(ExportDecl {
+            span: DUMMY_SP,
+            decl: Decl::Var(VarDecl {
+                span: DUMMY_SP,
+                kind: VarDeclKind::Const,
+                declare: Default::default(),
+                decls: vec![VarDeclarator {
+                    span: DUMMY_SP,
+                    name: Ident::new(file.class_name.clone(), DUMMY_SP).into(),
+                    init: Some(box Expr::Object(
+                        self.generate_object_for_file(env, file, client)?,
+                    )),
+                    definite: Default::default(),
+                }],
+            }),
+        })
     }
 
     fn generate_object_for_file(
