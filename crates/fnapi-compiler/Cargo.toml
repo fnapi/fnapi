@@ -10,6 +10,7 @@ version = "0.1.0"
 
 [dependencies]
 anyhow = "1.0.55"
+auto_impl = "1.0.1"
 fnapi-api-def = {path = "../fnapi-api-def"}
 fnapi-client-gen = {path = "../fnapi-client-gen"}
 fnapi-core = {path = "../fnapi-core"}
@@ -27,7 +28,7 @@ swc_common = "0.18.9"
 swc_ecma_transforms_base = "0.89.6"
 swc_ecma_transforms_proposal = "0.112.0"
 swc_ecma_transforms_typescript = "0.124.0"
-swc_ecmascript = { version = "0.165.0", features = ["parser", "codegen", "utils", "visit"] }
+swc_ecmascript = {version = "0.165.0", features = ["parser", "codegen", "utils", "visit"]}
 swc_error_reporters = "0.2.0"
 tokio = {version = "1.17.0", features = ["rt", "rt-multi-thread"]}
 tracing = "0.1.32"
