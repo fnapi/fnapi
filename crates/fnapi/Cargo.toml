@@ -19,6 +19,7 @@ fnapi-core = {path = "../fnapi-core"}
 futures = "0.3"
 rayon = "1"
 swc_common = {version = "0.18.9", features = ["concurrent"]}
+swc_ecmascript = {version = "0.165.0", features = ["parser", "codegen", "utils", "visit"]}
 swc_error_reporters = "0.2.0"
 tokio = {version = "1", features = ["macros"]}
 

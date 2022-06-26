@@ -554,6 +554,7 @@ dependencies = [
  "futures 0.3.21",
  "rayon",
  "swc_common",
+ "swc_ecmascript",
  "swc_error_reporters",
  "tokio",
 ]
