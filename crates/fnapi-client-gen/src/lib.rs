@@ -6,7 +6,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use fnapi_api_def::{ApiFile, ApiFn, ApiProject};
+use fnapi_api_def::{ApiFile, ApiFn, ProjectApis};
 use fnapi_core::Env;
 use rayon::prelude::*;
 use swc_common::DUMMY_SP;
@@ -25,7 +25,7 @@ pub struct JsClientConfig {
 }
 
 impl JsClientConfig {
-    pub fn generate(&self, env: &Env, project: &ApiProject) -> Result<Module> {
+    pub fn generate(&self, env: &Env, project: &ProjectApis) -> Result<Module> {
         env.with(|| {
             let client = private_ident!("__client");
             let import = ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
