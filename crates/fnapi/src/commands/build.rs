@@ -15,7 +15,7 @@ use tokio::{spawn, task::yield_now};
 #[derive(Parser, Debug)]
 pub(crate) struct BuildCommand {
     /// Option to deploy fnapi server to external providers.
-    #[clap(arg_enum, long, short = 't')]
+    #[clap(arg_enum, long, short = 't', default)]
     server_target: Target,
 
     /// Client types to generate.
@@ -39,12 +39,20 @@ pub(crate) enum ClientType {
 
 #[derive(ArgEnum, Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum Target {
-    Native,
+    #[clap(name = "fnapi")]
+    FnApi,
 
     #[clap(name = "nextjs")]
     NextJs,
 
+    #[clap(name = "lambda")]
     AwsLambda,
+}
+
+impl Default for Target {
+    fn default() -> Self {
+        Self::Native
+    }
 }
 
 impl BuildCommand {
