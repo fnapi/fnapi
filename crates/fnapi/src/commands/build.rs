@@ -1,4 +1,8 @@
-use std::{fs::create_dir_all, path::PathBuf, sync::Arc};
+use std::{
+    fs::{create_dir_all, Metadata},
+    path::PathBuf,
+    sync::Arc,
+};
 
 use anyhow::{Context, Error, Result};
 use clap::{ArgEnum, Parser};
@@ -9,11 +13,15 @@ use fnapi_compiler::{
 };
 use fnapi_core::Env;
 use futures::future::join_all;
+use rayon::prelude::*;
 use tokio::{spawn, task::yield_now};
 
 /// Build functions as a server and generate client sdk.
 #[derive(Parser, Debug)]
 pub(crate) struct BuildCommand {
+    /// Directories or files to build
+    inputs: Vec<PathBuf>,
+
     /// Option to deploy fnapi server to external providers.
     #[clap(arg_enum, long, short = 't', default_value = "fnapi")]
     server_target: Target,
@@ -57,6 +65,16 @@ impl Default for Target {
 
 impl BuildCommand {
     pub async fn run(self, env: &Env) -> Result<()> {
+        let inputs = self
+            .inputs
+            .into_par_iter()
+            .map(expand_dir)
+            .collect::<Result<Vec<_>>>()
+            .context("failed to expand inputs")?
+            .into_iter()
+            .flatten()
+            .collect();
+
         let fnapi_dir = self.fnapi_dir.unwrap_or_else(|| PathBuf::from(".fnapi"));
 
         create_dir_all(&fnapi_dir).context("failed to create fnapi directory")?;
@@ -68,7 +86,7 @@ impl BuildCommand {
         };
 
         let project = ProjectConfig {
-            input: Arc::new(InputFiles::TsConfig("tsconfig.json".into())),
+            input: Arc::new(InputFiles::Files(inputs)),
         }
         .resolve(env, server_target)
         .await
@@ -96,5 +114,27 @@ impl BuildCommand {
             .collect::<Result<Result<Vec<_>>, _>>()??;
 
         Ok(())
+    }
+}
+
+fn expand_dir(p: PathBuf) -> Result<Vec<PathBuf>> {
+    let stat = p
+        .metadata()
+        .with_context(|| format!("failed to get metadata of `{}`", p.display()))?;
+
+    if stat.is_dir() {
+        let read = p
+            .read_dir()
+            .with_context(|| format!("failed to read directory `{}`", p.display()))?;
+
+        Ok(read
+            .par_bridge()
+            .map(|v| expand_dir(v?.path()))
+            .collect::<Result<Vec<_>>>()?
+            .into_iter()
+            .flatten()
+            .collect())
+    } else {
+        return Ok(vec![p]);
     }
 }
