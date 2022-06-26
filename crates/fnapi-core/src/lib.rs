@@ -1,5 +1,6 @@
 use std::{borrow::Cow, sync::Arc};
 
+use auto_impl::auto_impl;
 use swc_common::{
     errors::{Handler, HANDLER},
     Globals, SourceMap, GLOBALS,
@@ -19,6 +20,7 @@ impl Env {
 }
 
 /// Any kind of implementation.
+#[auto_impl(Box, Arc)]
 pub trait Entity: Send + Sync {
     fn id(&self) -> Cow<'static, str>;
 

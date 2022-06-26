@@ -1,6 +1,7 @@
 use std::{borrow::Cow, sync::Arc};
 
 use anyhow::Result;
+use auto_impl::auto_impl;
 use fnapi_api_def::{ApiFile, ApiFn, ProjectApis};
 use fnapi_core::Entity;
 use swc_atoms::JsWord;
@@ -35,6 +36,7 @@ impl ServerTarget for Native {
     }
 }
 
+#[auto_impl(Box)]
 pub trait ServerlessTarget: Entity {}
 
 pub struct ServerlessService(pub dyn ServerlessTarget);
