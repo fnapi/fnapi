@@ -1,3 +1,11 @@
 {
-  "words": ["Fastify", "fnapi", "msvc", "pnpm", "rollup", "typeserver"]
+  "words": [
+    "Fastify",
+    "fnapi",
+    "msvc",
+    "nextjs",
+    "pnpm",
+    "rollup",
+    "typeserver"
+  ]
 }
