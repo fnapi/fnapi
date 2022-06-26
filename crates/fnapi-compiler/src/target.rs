@@ -19,13 +19,29 @@ pub struct ApiDesc<'a> {
 
 pub struct Native {}
 
-impl ServerTarget for Native {}
+impl ServerTarget for Native {
+    fn store_api(&self, api: &ApiDesc) -> Result<()> {
+        todo!()
+    }
+
+    fn clear(&self) -> Result<()> {
+        todo!()
+    }
+}
 
 pub trait ServerlessTarget: Send + Sync {}
 
 pub struct ServerlessService(pub dyn ServerlessTarget);
 
-impl ServerTarget for ServerlessService {}
+impl ServerTarget for ServerlessService {
+    fn store_api(&self, api: &ApiDesc) -> Result<()> {
+        todo!()
+    }
+
+    fn clear(&self) -> Result<()> {
+        todo!()
+    }
+}
 
 pub struct NextJs {}
 
