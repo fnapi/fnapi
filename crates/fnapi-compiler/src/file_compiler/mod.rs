@@ -463,7 +463,7 @@ impl VisitMut for FileCompiler<'_> {
                             span: DUMMY_SP,
                             local: wrapper.clone(),
                         })],
-                        src: "@fnapi/api/rt/wrapApiClass.js".into(),
+                        src: self.target.wrap_api_class_import_path().into(),
                         type_only: false,
                         asserts: Default::default(),
                     }));
