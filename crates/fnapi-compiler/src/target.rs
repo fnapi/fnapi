@@ -4,7 +4,7 @@ use anyhow::Result;
 use fnapi_api_def::{ApiFile, ApiFn, ProjectApis};
 
 /// The target of **server**.
-pub trait Target {
+pub trait ServerTarget {
     fn store_api(&self, api: &ApiDesc) -> Result<()>;
 
     fn clear(&self) -> Result<()>;
@@ -17,15 +17,15 @@ pub struct ApiDesc<'a> {
     pub f: Arc<ApiFn>,
 }
 
-pub struct Direct {}
+pub struct Native {}
 
-impl Target for Direct {}
+impl ServerTarget for Native {}
 
 pub trait ServerlessTarget {}
 
-pub struct Serverless(pub dyn ServerlessTarget);
+pub struct ServerlessService(pub dyn ServerlessTarget);
 
-impl Target for Serverless {}
+impl ServerTarget for ServerlessService {}
 
 pub struct NextJs {}
 
