@@ -30,7 +30,6 @@ impl ServerApiFile {
         &self,
         env: &Env,
         project: Arc<Project>,
-        target: Arc<dyn ServerTarget>,
     ) -> Result<(Module, Arc<ApiFile>)> {
         let name = Arc::new(swc_common::FileName::Real(self.path.clone()));
         let filename = self.path.display().to_string();

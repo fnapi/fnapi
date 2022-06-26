@@ -82,4 +82,6 @@ pub struct Project {
     pub(crate) modules: Arc<Modules>,
 
     pub files: Arc<Vec<PathBuf>>,
+
+    pub server_target: Arc<dyn ServerTarget>,
 }
