@@ -5,7 +5,7 @@ use fnapi_core::Env;
 use module_storage::modules::Modules;
 use tokio::{process::Command, try_join};
 
-use crate::type_server::TypeServer;
+use crate::{type_server::TypeServer, target::ServerTarget};
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum InputFiles {

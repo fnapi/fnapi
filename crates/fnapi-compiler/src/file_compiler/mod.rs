@@ -69,7 +69,7 @@ impl ServerApiFile {
                             class_name: Default::default(),
                             compiled_method_records: Default::default(),
 
-                            target,
+                            target: project.server_target.clone(),
                         };
                         m.visit_mut_with(&mut compiler);
                         class_name = compiler.class_name;
