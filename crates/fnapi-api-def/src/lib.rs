@@ -12,7 +12,7 @@ pub mod types;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Project {
+pub struct ApiProject {
     pub files: Vec<Arc<ApiFile>>,
 }
 
