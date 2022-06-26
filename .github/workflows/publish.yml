@@ -34,12 +34,13 @@ jobs:
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
             build: |-
               set -e &&
+              pnpm i &&
               pnpm run --dir ./packages/compiler build:release:native --target x86_64-unknown-linux-gnu &&
               strip packages/compiler/*.node
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: set -e && pnpm run --dir ./packages/compiler build:release:native && strip packages/compiler/*.node
+            build: set -e && pnpm i && pnpm run --dir ./packages/compiler build:release:native && strip packages/compiler/*.node
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
@@ -55,6 +56,7 @@ jobs:
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
             build: >-
               set -e &&
+              pnpm i &&
               rustup target add aarch64-unknown-linux-gnu &&
               export CC_aarch64_unknown_linux_gnu=/usr/aarch64-unknown-linux-gnu/bin/aarch64-unknown-linux-gnu-gcc &&
               pnpm run --dir ./packages/compiler build:release:native --target aarch64-unknown-linux-gnu &&
@@ -92,6 +94,7 @@ jobs:
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
             build: |-
               set -e &&
+              pnpm i &&
               rustup target add aarch64-unknown-linux-musl &&
               pnpm run --dir ./packages/compiler build:release:native --target aarch64-unknown-linux-musl &&
               /aarch64-linux-musl-cross/bin/aarch64-linux-musl-strip packages/compiler/*.node
@@ -163,9 +166,7 @@ jobs:
         with:
           image: ${{ matrix.settings.docker }}
           options: --user 0:0 -v ${{ github.workspace }}/.cargo-cache/git/db:/root/.cargo/git/db -v ${{ github.workspace }}/.cargo/registry/cache:/root/.cargo/registry/cache -v ${{ github.workspace }}/.cargo/registry/index:/root/.cargo/registry/index -v ${{ github.workspace }}:/build -w /build
-          run: |
-            pnpm i
-            ${{ matrix.settings.build }}
+          run: ${{ matrix.settings.build }}
       - name: Build
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
