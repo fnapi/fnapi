@@ -5,7 +5,7 @@ use fnapi_core::Env;
 use module_storage::modules::Modules;
 use tokio::{process::Command, try_join};
 
-use crate::{type_server::TypeServer, target::ServerTarget};
+use crate::{target::ServerTarget, type_server::TypeServer};
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum InputFiles {
@@ -56,7 +56,11 @@ pub struct ProjectConfig {
 
 impl ProjectConfig {
     #[tracing::instrument(name = "ProjectConfig::resolve", skip_all)]
-    pub async fn resolve(&self, env: &Env) -> Result<Arc<Project>> {
+    pub async fn resolve(
+        &self,
+        env: &Env,
+        server_target: Arc<dyn ServerTarget>,
+    ) -> Result<Arc<Project>> {
         let (type_server, files) =
             try_join!(TypeServer::start(&self.input), self.input.to_files())?;
         let files = Arc::new(files);
@@ -67,6 +71,7 @@ impl ProjectConfig {
             modules,
             type_server,
             files,
+            server_target,
         }))
     }
 }
