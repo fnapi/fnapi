@@ -21,7 +21,7 @@ pub struct Native {}
 
 impl ServerTarget for Native {}
 
-pub trait ServerlessTarget {}
+pub trait ServerlessTarget: Send + Sync {}
 
 pub struct ServerlessService(pub dyn ServerlessTarget);
 
