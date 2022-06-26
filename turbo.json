@@ -6,12 +6,16 @@
       "dependsOn": ["^build:native"],
       "cache": false
     },
+    "build:fnapi": {
+      "dependsOn": ["^build:native"],
+      "inputs": ["fnapi/**/*.ts"]
+    },
     "build:tsc": {
       "dependsOn": ["^build:tsc"],
       "inputs": ["src/**/*.ts", "src/**/*.tsx"]
     },
     "build": {
-      "dependsOn": ["^build", "build:native", "build:tsc"]
+      "dependsOn": ["^build", "build:native", "build:fnapi", "build:tsc"]
     },
     "test": {
       "dependsOn": ["build"],
