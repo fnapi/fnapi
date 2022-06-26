@@ -4,7 +4,7 @@ use anyhow::Result;
 use fnapi_api_def::{ApiFile, ApiFn, ProjectApis};
 
 /// The target of **server**.
-pub trait ServerTarget {
+pub trait ServerTarget: Send + Sync {
     fn store_api(&self, api: &ApiDesc) -> Result<()>;
 
     fn clear(&self) -> Result<()>;

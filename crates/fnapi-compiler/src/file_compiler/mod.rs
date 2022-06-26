@@ -18,7 +18,7 @@ use swc_ecmascript::{
 use tokio::task::spawn_blocking;
 
 use self::{import_analyzer::ImportMap, magic_replacer::magic_replacer};
-use crate::{project::Project, ServerApiFile};
+use crate::{project::Project, target::ServerTarget, ServerApiFile};
 
 mod import_analyzer;
 mod magic_replacer;
@@ -30,6 +30,7 @@ impl ServerApiFile {
         &self,
         env: &Env,
         project: Arc<Project>,
+        target: Arc<dyn ServerTarget>,
     ) -> Result<(Module, Arc<ApiFile>)> {
         let name = Arc::new(swc_common::FileName::Real(self.path.clone()));
         let filename = self.path.display().to_string();
@@ -68,6 +69,8 @@ impl ServerApiFile {
                             stmts_to_append: &mut extras,
                             class_name: Default::default(),
                             compiled_method_records: Default::default(),
+
+                            target,
                         };
                         m.visit_mut_with(&mut compiler);
                         class_name = compiler.class_name;
@@ -127,6 +130,8 @@ struct FileCompiler<'a> {
 
     class_name: JsWord,
     compiled_method_records: Vec<MethodRecord>,
+
+    target: Arc<dyn ServerTarget>,
 }
 
 #[derive(Debug, Clone)]
