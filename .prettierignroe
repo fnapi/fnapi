@@ -1,5 +1,4 @@
 
-
 __vendor/
 
 # Generated
@@ -12,3 +11,4 @@ output/
 output.js
 output.mjs
 output.*.js
+client.*.mjs
