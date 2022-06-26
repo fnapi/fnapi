@@ -1,8 +1,4 @@
-use std::{
-    fs::{create_dir_all, Metadata},
-    path::PathBuf,
-    sync::Arc,
-};
+use std::{fs::create_dir_all, path::PathBuf, sync::Arc};
 
 use anyhow::{bail, Context, Error, Result};
 use clap::{ArgEnum, Parser};
