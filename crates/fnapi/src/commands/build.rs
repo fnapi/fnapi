@@ -15,7 +15,7 @@ use tokio::{spawn, task::yield_now};
 #[derive(Parser, Debug)]
 pub(crate) struct BuildCommand {
     /// Option to deploy fnapi server to external providers.
-    #[clap(arg_enum, long, short = 't', default_value = "native")]
+    #[clap(arg_enum, long, short = 't', default_value = "fnapi")]
     server_target: Target,
 
     /// Client types to generate.
