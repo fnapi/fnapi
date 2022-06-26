@@ -37,6 +37,15 @@ pub(crate) enum ClientType {
     Web,
 }
 
+#[derive(ArgEnum, Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum ServerTarget {
+    Native,
+
+    NextJs,
+
+    AwsLambda,
+}
+
 impl BuildCommand {
     pub async fn run(self, env: &Env) -> Result<()> {
         let fnapi_dir = self.fnapi_dir.unwrap_or_else(|| PathBuf::from(".fnapi"));

@@ -5,6 +5,7 @@ use std::{path::PathBuf, sync::Arc};
 use fnapi_api_def::{ApiFile, ProjectApis};
 use fnapi_compiler::{
     project::{InputFiles, ProjectConfig},
+    target::Native,
     ServerApiFile,
 };
 use fnapi_core::Env;
@@ -36,7 +37,7 @@ fn compile(input: PathBuf) {
             let project = ProjectConfig {
                 input: Arc::new(InputFiles::Files(vec![input.clone()])),
             }
-            .resolve(&env)
+            .resolve(&env, Arc::new(Native {}))
             .await?;
 
             let m = ServerApiFile::from_file(input).unwrap();
@@ -111,7 +112,7 @@ fn errors(input: PathBuf) {
             let project = ProjectConfig {
                 input: Arc::new(InputFiles::Files(vec![input.clone()])),
             }
-            .resolve(&env)
+            .resolve(&env, Arc::new(Native {}))
             .await?;
 
             let m = ServerApiFile::from_file(input).unwrap();
