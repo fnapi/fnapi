@@ -42,7 +42,7 @@ pub trait ServerlessTarget: Entity {}
 pub struct ServerlessService(Box<dyn ServerlessTarget>);
 
 impl ServerlessService {
-    pub fn new(target: impl ServerlessTarget) -> Self {
+    pub fn new(target: impl 'static + ServerlessTarget) -> Self {
         Self(Box::new(target))
     }
 }
