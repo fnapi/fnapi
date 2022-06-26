@@ -67,7 +67,7 @@ pub struct NextJs {}
 
 impl Entity for NextJs {
     fn id(&self) -> Cow<'static, str> {
-        "next-js".into()
+        "nextjs".into()
     }
 
     fn name(&self) -> Cow<'static, str> {
