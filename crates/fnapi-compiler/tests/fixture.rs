@@ -2,7 +2,7 @@
 
 use std::{path::PathBuf, sync::Arc};
 
-use fnapi_api_def::{ApiFile, ApiProject, ProjectApis};
+use fnapi_api_def::{ApiFile, ProjectApis};
 use fnapi_compiler::{
     project::{InputFiles, ProjectConfig},
     ServerApiFile,
