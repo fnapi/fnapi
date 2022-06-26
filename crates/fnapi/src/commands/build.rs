@@ -140,6 +140,6 @@ fn expand_dir(p: PathBuf) -> Result<Vec<PathBuf>> {
             .flatten()
             .collect())
     } else {
-        return Ok(vec![p]);
+        Ok(vec![p])
     }
 }
