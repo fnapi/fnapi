@@ -1,10 +1,13 @@
 use std::sync::Arc;
 
+use anyhow::Result;
 use fnapi_api_def::{ApiFile, ApiFn, ProjectApis};
 
 /// The target of **server**.
 pub trait Target {
-    fn store_api(&self, api: &ApiDesc);
+    fn store_api(&self, api: &ApiDesc) -> Result<()>;
+
+    fn clear(&self) -> Result<()>;
 }
 
 #[derive(Debug, Clone)]
