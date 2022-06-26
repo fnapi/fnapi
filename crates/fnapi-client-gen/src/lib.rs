@@ -77,7 +77,7 @@ impl JsClientConfig {
         client: &Ident,
     ) -> Result<PropOrSpread> {
         Ok(PropOrSpread::Prop(box Prop::KeyValue(KeyValueProp {
-            key: PropName::Str(file.class_name.clone().into()),
+            key: PropName::Ident(Ident::new(file.class_name.clone(), DUMMY_SP)),
             value: box Expr::Object(self.generate_object_for_file(env, file, client)?),
         })))
     }
