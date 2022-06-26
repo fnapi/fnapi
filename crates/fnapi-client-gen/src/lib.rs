@@ -26,16 +26,6 @@ pub struct JsClientConfig {
 
 impl JsClientConfig {
     pub fn generate(&self, env: &Env, project: &Project) -> Result<Module> {
-        project
-            .files
-            .par_iter()
-            .map(|v| self.generate_file(env, v))
-            .collect::<Result<_>>()
-    }
-
-    pub fn generate_file(&self, env: &Env, file: &Arc<ApiFile>) -> Result<Module> {}
-
-    fn generate_object_for_file(&self, env: &Env, file: &Arc<ApiFile>) -> Result<ObjectLit> {
         env.with(|| {
             let client = private_ident!("__client");
             let import = ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
@@ -56,6 +46,39 @@ impl JsClientConfig {
                 asserts: Default::default(),
             }));
 
+            let body = project
+                .files
+                .par_iter()
+                .map(|v| self.generate_file(env, v, &client))
+                .collect::<Result<_>>()?;
+
+            Ok(Module {
+                span: DUMMY_SP,
+                body,
+                shebang: Default::default(),
+            })
+        })
+    }
+
+    fn generate_file(&self, env: &Env, file: &Arc<ApiFile>, client: &Ident) -> Result<ModuleItem> {
+        env.with(|| {
+            let expr = box Expr::Object(self.generate_object_for_file(env, file, client)?);
+
+            let export = ModuleItem::ModuleDecl(ModuleDecl::ExportDefaultExpr(ExportDefaultExpr {
+                span: DUMMY_SP,
+                expr,
+            }));
+            Ok(export)
+        })
+    }
+
+    fn generate_object_for_file(
+        &self,
+        env: &Env,
+        file: &Arc<ApiFile>,
+        client: &Ident,
+    ) -> Result<ObjectLit> {
+        env.with(|| {
             let fns = file
                 .functions
                 .iter()
@@ -72,18 +95,9 @@ impl JsClientConfig {
                 })
                 .collect::<Result<Vec<_>>>()?;
 
-            let expr = box Expr::Object(ObjectLit {
+            Ok(ObjectLit {
                 span: DUMMY_SP,
                 props: fns,
-            });
-
-            let export = ModuleItem::ModuleDecl(ModuleDecl::ExportDefaultExpr(ExportDefaultExpr {
-                span: DUMMY_SP,
-                expr,
-            }));
-            Ok(Module {
-                body: vec![import, export],
-                ..Module::dummy()
             })
         })
     }
