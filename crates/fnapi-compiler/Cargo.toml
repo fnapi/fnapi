@@ -12,7 +12,6 @@ version = "0.1.0"
 anyhow = "1.0.55"
 auto_impl = "1.0.1"
 fnapi-api-def = {path = "../fnapi-api-def"}
-fnapi-client-gen = {path = "../fnapi-client-gen"}
 fnapi-core = {path = "../fnapi-core"}
 jsonrpc-client-transports = "18.0.0"
 jsonrpc-core = "18.0.0"
@@ -34,6 +33,7 @@ tokio = {version = "1.17.0", features = ["rt", "rt-multi-thread"]}
 tracing = "0.1.32"
 
 [dev-dependencies]
+fnapi-client-gen = {path = "../fnapi-client-gen"}
 fnapi-testing = {path = "../fnapi-testing"}
 swc_ecma_transforms_testing = "0.91.0"
 testing = "0.20.1"

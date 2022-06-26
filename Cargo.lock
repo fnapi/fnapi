@@ -547,6 +547,7 @@ dependencies = [
  "anyhow",
  "clap",
  "fnapi-api-def",
+ "fnapi-client-gen",
  "fnapi-compiler",
  "fnapi-core",
  "fnapi-testing",
