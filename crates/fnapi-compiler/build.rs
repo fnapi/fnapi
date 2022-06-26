@@ -2,6 +2,7 @@ use std::process::Command;
 
 fn main() {
     println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo:rerun-if-changed=rollup.config.js");
     println!("cargo:rerun-if-changed=src/**/*.ts");
 
     let mut c = if cfg!(target_os = "windows") {
