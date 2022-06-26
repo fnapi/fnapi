@@ -1,4 +1,4 @@
-use fnapi_api_def::{ApiFile, ProjectApis};
+use fnapi_api_def::{ApiFile, ProjectApis, ApiFn};
 
 /// The target of **server**.
 pub trait Target {
