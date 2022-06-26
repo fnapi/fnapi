@@ -4,6 +4,7 @@ use anyhow::{Context, Error, Result};
 use clap::{ArgEnum, Parser};
 use fnapi_compiler::{
     project::{InputFiles, ProjectConfig},
+    target::{AwsLambda, Native, NextJs, ServerTarget, ServerlessService},
     ServerApiFile,
 };
 use fnapi_core::Env;
@@ -13,13 +14,12 @@ use tokio::{spawn, task::yield_now};
 /// Build functions as a server and generate client sdk.
 #[derive(Parser, Debug)]
 pub(crate) struct BuildCommand {
-    /// The functions to build. This is a list of regular
-    /// expressions.
-    #[clap(long, name = "pattern")]
-    only: Vec<String>,
-
     /// Client types to generate.
     #[clap(arg_enum, long, short = 't')]
+    server_target: Target,
+
+    /// Client types to generate.
+    #[clap(arg_enum, long, short = 'c')]
     client_types: Vec<ClientType>,
 
     /// Directory to use for generated client api.
@@ -38,7 +38,7 @@ pub(crate) enum ClientType {
 }
 
 #[derive(ArgEnum, Debug, Clone, Copy, PartialEq, Eq)]
-pub(crate) enum ServerTarget {
+pub(crate) enum Target {
     Native,
 
     NextJs,
@@ -52,10 +52,16 @@ impl BuildCommand {
 
         create_dir_all(&fnapi_dir).context("failed to create fnapi directory")?;
 
+        let server_target: Arc<dyn ServerTarget> = match self.server_target {
+            Target::Native => Arc::new(Native {}),
+            Target::NextJs => Arc::new(ServerlessService(box NextJs {})),
+            Target::AwsLambda => Arc::new(ServerlessService(box AwsLambda {})),
+        };
+
         let project = ProjectConfig {
             input: Arc::new(InputFiles::TsConfig("tsconfig.json".into())),
         }
-        .resolve(env)
+        .resolve(env, server_target)
         .await
         .context("failed to resolve project")?;
 
