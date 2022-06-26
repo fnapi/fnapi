@@ -54,8 +54,8 @@ impl BuildCommand {
 
         let server_target: Arc<dyn ServerTarget> = match self.server_target {
             Target::Native => Arc::new(Native {}),
-            Target::NextJs => Arc::new(ServerlessService(box NextJs {})),
-            Target::AwsLambda => Arc::new(ServerlessService(box AwsLambda {})),
+            Target::NextJs => Arc::new(ServerlessService::new(NextJs {})),
+            Target::AwsLambda => Arc::new(ServerlessService::new(AwsLambda {})),
         };
 
         let project = ProjectConfig {

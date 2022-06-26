@@ -39,7 +39,13 @@ impl ServerTarget for Native {
 #[auto_impl(Box)]
 pub trait ServerlessTarget: Entity {}
 
-pub struct ServerlessService(pub dyn ServerlessTarget);
+pub struct ServerlessService(Box<dyn ServerlessTarget>);
+
+impl ServerlessService {
+    pub fn new(target: impl ServerlessTarget) -> Self {
+        Self(Box::new(target))
+    }
+}
 
 impl Entity for ServerlessService {
     fn id(&self) -> Cow<'static, str> {
