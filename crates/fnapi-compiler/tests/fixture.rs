@@ -17,8 +17,16 @@ use testing::NormalizedOutput;
 fn compile(input: PathBuf) {
     let output_path = input.with_file_name("output.mjs");
     let api_def_output = input.with_file_name("apiDef.json");
-    let node_client = input.with_file_name("client.node.mjs");
-    let web_client = input.with_file_name("client.web.mjs");
+    let node_client = input
+        .parent()
+        .unwrap()
+        .join("output")
+        .join("client.node.mjs");
+    let web_client = input
+        .parent()
+        .unwrap()
+        .join("output")
+        .join("client.web.mjs");
 
     let (code, api_def) = run_async_test(
         HandlerOpts {
