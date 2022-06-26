@@ -8,7 +8,8 @@
     },
     "build:fnapi": {
       "dependsOn": ["^build:native"],
-      "inputs": ["fnapi/**/*.ts"]
+      "inputs": ["fnapi/**/*.ts"],
+      "cache": false
     },
     "build:tsc": {
       "dependsOn": ["^build:tsc"],
