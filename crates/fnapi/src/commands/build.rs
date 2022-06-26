@@ -84,8 +84,10 @@ impl BuildCommand {
         }
 
         let fnapi_dir = self.fnapi_dir.unwrap_or_else(|| PathBuf::from(".fnapi"));
+        let fnapi_server_dir = fnapi_dir.join("server");
 
         create_dir_all(&fnapi_dir).context("failed to create fnapi directory")?;
+        create_dir_all(&fnapi_server_dir).context("failed to create fnapi server directory")?;
 
         let server_target: Arc<dyn ServerTarget> = match self.server_target {
             Target::Native => Arc::new(Native {}),
@@ -121,7 +123,7 @@ impl BuildCommand {
             .into_iter()
             .collect::<Result<Result<Vec<_>>, _>>()??;
 
-        let file_apis = files.into_iter().map(|v| v.2.clone()).collect::<Vec<_>>();
+        let file_apis = files.iter().map(|v| v.2.clone()).collect::<Vec<_>>();
 
         let project_apis = ProjectApis { files: file_apis };
 
@@ -148,6 +150,18 @@ impl BuildCommand {
             write(&fnapi_dir.join("client.web.mjs"), web_client.as_bytes())
                 .context("failed to write web client")?;
         }
+
+        files
+            .par_iter()
+            .map(|(_, m, api)| {
+                write(
+                    &fnapi_server_dir.join(format!("{}.mjs", api.class_name)),
+                    print(env.cm.clone(), m).as_bytes(),
+                )
+                .context("failed to write web client")
+            })
+            .collect::<Result<Vec<_>>>()?;
+
         Ok(())
     }
 }
