@@ -14,7 +14,7 @@ use tokio::{spawn, task::yield_now};
 /// Build functions as a server and generate client sdk.
 #[derive(Parser, Debug)]
 pub(crate) struct BuildCommand {
-    /// Client types to generate.
+    /// Option to deploy fnapi server to external providers.
     #[clap(arg_enum, long, short = 't')]
     server_target: Target,
 
@@ -41,6 +41,7 @@ pub(crate) enum ClientType {
 pub(crate) enum Target {
     Native,
 
+    #[clap(name = "nextjs")]
     NextJs,
 
     AwsLambda,
