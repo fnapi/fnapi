@@ -34,6 +34,8 @@ jobs:
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
             build: |-
               set -e &&
+              pnpm set store ~/.pnpm-store/ &&
+              pnpm i &&
               pnpm run --dir ./packages/compiler build:release:native --target x86_64-unknown-linux-gnu &&
               strip packages/compiler/*.node
           - host: ubuntu-latest
@@ -55,6 +57,8 @@ jobs:
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
             build: >-
               set -e &&
+              pnpm set store ~/.pnpm-store/ &&
+              pnpm i &&
               rustup target add aarch64-unknown-linux-gnu &&
               export CC_aarch64_unknown_linux_gnu=/usr/aarch64-unknown-linux-gnu/bin/aarch64-unknown-linux-gnu-gcc &&
               pnpm run --dir ./packages/compiler build:release:native --target aarch64-unknown-linux-gnu &&
