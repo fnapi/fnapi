@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use fnapi_api_def::{ApiFile, ApiFn, ProjectApis};
 
 /// The target of **server**.
