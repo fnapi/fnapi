@@ -131,7 +131,7 @@ impl BuildCommand {
                 &fnapi_client_gen::JsClientConfig {
                     target_env: JsTargetEnv::NodeJs,
                 }
-                .generate(&env, &project_apis),
+                .generate(&env, &project_apis)?,
             );
             write(&fnapi_dir.join("client.node.mjs"), node_client.as_bytes())
                 .context("failed to write node client")?;
