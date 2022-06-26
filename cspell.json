@@ -4,6 +4,7 @@
     "fnapi",
     "msvc",
     "nextjs",
+    "openrpc",
     "pnpm",
     "rollup",
     "typeserver"
