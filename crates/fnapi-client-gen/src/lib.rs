@@ -6,7 +6,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use fnapi_api_def::{ApiFile, ApiFn, Project};
+use fnapi_api_def::{ApiFile, ApiFn, ApiProject};
 use fnapi_core::Env;
 use rayon::prelude::*;
 use swc_common::DUMMY_SP;
@@ -25,7 +25,7 @@ pub struct JsClientConfig {
 }
 
 impl JsClientConfig {
-    pub fn generate(&self, env: &Env, project: &Project) -> Result<Module> {
+    pub fn generate(&self, env: &Env, project: &ApiProject) -> Result<Module> {
         env.with(|| {
             let client = private_ident!("__client");
             let import = ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
@@ -46,32 +46,40 @@ impl JsClientConfig {
                 asserts: Default::default(),
             }));
 
-            let mut body = project
+            let body = project
                 .files
                 .par_iter()
                 .map(|v| self.generate_file(env, v, &client))
                 .collect::<Result<Vec<_>>>()?;
 
-            body.insert(0, import);
-
-            Ok(Module {
+            let expr = box Expr::Object(ObjectLit {
                 span: DUMMY_SP,
-                body,
-                shebang: Default::default(),
-            })
-        })
-    }
-
-    fn generate_file(&self, env: &Env, file: &Arc<ApiFile>, client: &Ident) -> Result<ModuleItem> {
-        env.with(|| {
-            let expr = box Expr::Object(self.generate_object_for_file(env, file, client)?);
+                props: body,
+            });
 
             let export = ModuleItem::ModuleDecl(ModuleDecl::ExportDefaultExpr(ExportDefaultExpr {
                 span: DUMMY_SP,
                 expr,
             }));
-            Ok(export)
+
+            Ok(Module {
+                span: DUMMY_SP,
+                body: vec![import, export],
+                shebang: Default::default(),
+            })
         })
+    }
+
+    fn generate_file(
+        &self,
+        env: &Env,
+        file: &Arc<ApiFile>,
+        client: &Ident,
+    ) -> Result<PropOrSpread> {
+        Ok(PropOrSpread::Prop(box Prop::KeyValue(KeyValueProp {
+            key: PropName::Str(file.class_name.clone().into()),
+            value: box Expr::Object(self.generate_object_for_file(env, file, client)?),
+        })))
     }
 
     fn generate_object_for_file(
