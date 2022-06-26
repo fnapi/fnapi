@@ -13,6 +13,7 @@ anyhow = "1.0.55"
 auto_impl = "1.0.1"
 fnapi-api-def = {path = "../fnapi-api-def"}
 fnapi-core = {path = "../fnapi-core"}
+hyper = {version = "0.14.19", features = ["tcp"]}
 jsonrpc-client-transports = {version = "18.0.0", default-features = false, features = ["http"]}
 jsonrpc-core = "18.0.0"
 jsonrpc-core-client = "18.0.0"
