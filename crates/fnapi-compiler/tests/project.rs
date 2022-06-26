@@ -2,6 +2,7 @@ use std::{env, path::PathBuf, sync::Arc};
 
 use fnapi_compiler::{
     project::{InputFiles, ProjectConfig},
+    target::Native,
     ServerApiFile,
 };
 use fnapi_testing::{run_async_test, swc_handler::HandlerOpts};
@@ -32,7 +33,7 @@ fn exec(tsconfig_json: PathBuf) {
             let project = ProjectConfig {
                 input: Arc::new(InputFiles::TsConfig(tsconfig_json)),
             }
-            .resolve(&env)
+            .resolve(&env, Arc::new(Native {}))
             .await?;
 
             {

@@ -8,6 +8,7 @@ use anyhow::Result;
 
 mod file_compiler;
 pub mod project;
+pub mod target;
 mod type_server;
 
 /// One input file.

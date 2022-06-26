@@ -88,6 +88,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "auto_impl"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8a8c1df849285fbacd587de7818cc7d13be6cd2cbcd47a04fb1801b0e2706e33"
+dependencies = [
+ "proc-macro-error",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "autocfg"
 version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -534,12 +546,15 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
+ "fnapi-api-def",
+ "fnapi-client-gen",
  "fnapi-compiler",
  "fnapi-core",
  "fnapi-testing",
  "futures 0.3.21",
  "rayon",
  "swc_common",
+ "swc_ecmascript",
  "swc_error_reporters",
  "tokio",
 ]
@@ -579,6 +594,7 @@ name = "fnapi-compiler"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "auto_impl",
  "fnapi-api-def",
  "fnapi-client-gen",
  "fnapi-core",
@@ -610,6 +626,7 @@ name = "fnapi-core"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "auto_impl",
  "swc_common",
 ]
 

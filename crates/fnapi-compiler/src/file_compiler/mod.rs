@@ -18,7 +18,7 @@ use swc_ecmascript::{
 use tokio::task::spawn_blocking;
 
 use self::{import_analyzer::ImportMap, magic_replacer::magic_replacer};
-use crate::{project::Project, ServerApiFile};
+use crate::{project::Project, target::ServerTarget, ServerApiFile};
 
 mod import_analyzer;
 mod magic_replacer;
@@ -68,6 +68,8 @@ impl ServerApiFile {
                             stmts_to_append: &mut extras,
                             class_name: Default::default(),
                             compiled_method_records: Default::default(),
+
+                            target: project.server_target.clone(),
                         };
                         m.visit_mut_with(&mut compiler);
                         class_name = compiler.class_name;
@@ -127,6 +129,8 @@ struct FileCompiler<'a> {
 
     class_name: JsWord,
     compiled_method_records: Vec<MethodRecord>,
+
+    target: Arc<dyn ServerTarget>,
 }
 
 #[derive(Debug, Clone)]
@@ -459,7 +463,7 @@ impl VisitMut for FileCompiler<'_> {
                             span: DUMMY_SP,
                             local: wrapper.clone(),
                         })],
-                        src: "@fnapi/api/rt/wrapApiClass.js".into(),
+                        src: self.target.wrap_api_class_import_path().into(),
                         type_only: false,
                         asserts: Default::default(),
                     }));
