@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build:fnapi": "fnapi build --server-target=nextjs"
+    "build:fnapi": "fnapi build --server-target=nextjs fnapi"
   },
   "dependencies": {
     "@fnapi/api": "workspace:^1.0.0",
