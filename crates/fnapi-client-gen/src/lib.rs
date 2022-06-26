@@ -9,7 +9,7 @@ use anyhow::Result;
 use fnapi_api_def::{ApiFile, ApiFn, Project};
 use fnapi_core::Env;
 use rayon::prelude::*;
-use swc_common::{util::take::Take, DUMMY_SP};
+use swc_common::DUMMY_SP;
 use swc_ecma_ast::*;
 use swc_ecma_utils::{private_ident, quote_ident, ExprFactory};
 
@@ -46,11 +46,13 @@ impl JsClientConfig {
                 asserts: Default::default(),
             }));
 
-            let body = project
+            let mut body = project
                 .files
                 .par_iter()
                 .map(|v| self.generate_file(env, v, &client))
-                .collect::<Result<_>>()?;
+                .collect::<Result<Vec<_>>>()?;
+
+            body.insert(0, import);
 
             Ok(Module {
                 span: DUMMY_SP,
@@ -83,7 +85,7 @@ impl JsClientConfig {
                 .functions
                 .iter()
                 .map(|f| {
-                    self.generate_fn(file, f, &client)
+                    self.generate_fn(file, f, client)
                         .map(|f| {
                             Prop::Method(MethodProp {
                                 key: f.ident.clone().into(),
