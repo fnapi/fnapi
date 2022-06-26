@@ -1,8 +1,15 @@
-use fnapi_api_def::{ApiFile, ProjectApis, ApiFn};
+use fnapi_api_def::{ApiFile, ApiFn, ProjectApis};
 
 /// The target of **server**.
 pub trait Target {
-    fn store_api(&self, http_path: &str, project: &ProjectApis, file: &ApiFile, api: &ApiFn);
+    fn store_api(&self, api: &ApiDesc);
+}
+
+#[derive(Debug, Clone)]
+pub struct ApiDesc<'a> {
+    pub project: &'a ProjectApis,
+    pub file: Arc<ApiFile>,
+    pub f: Arc<ApiFn>,
 }
 
 pub struct Direct {}
