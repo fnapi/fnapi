@@ -6,10 +6,10 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use fnapi_api_def::{ApiFile, ApiFn, Project};
+use fnapi_api_def::{ApiFile, ApiFn, ProjectApis};
 use fnapi_core::Env;
 use rayon::prelude::*;
-use swc_common::{util::take::Take, DUMMY_SP};
+use swc_common::DUMMY_SP;
 use swc_ecma_ast::*;
 use swc_ecma_utils::{private_ident, quote_ident, ExprFactory};
 
@@ -25,15 +25,7 @@ pub struct JsClientConfig {
 }
 
 impl JsClientConfig {
-    pub fn generate(&self, env: &Env, project: &Project) -> Result<Vec<Module>> {
-        project
-            .files
-            .par_iter()
-            .map(|v| self.generate_file(env, v))
-            .collect::<Result<_>>()
-    }
-
-    pub fn generate_file(&self, env: &Env, file: &Arc<ApiFile>) -> Result<Module> {
+    pub fn generate(&self, env: &Env, project: &ProjectApis) -> Result<Module> {
         env.with(|| {
             let client = private_ident!("__client");
             let import = ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
@@ -54,11 +46,57 @@ impl JsClientConfig {
                 asserts: Default::default(),
             }));
 
+            let mut body = project
+                .files
+                .par_iter()
+                .map(|v| {
+                    self.generate_file(env, v, &client)
+                        .map(ModuleDecl::ExportDecl)
+                        .map(ModuleItem::ModuleDecl)
+                })
+                .collect::<Result<Vec<_>>>()?;
+
+            body.insert(0, import);
+
+            Ok(Module {
+                span: DUMMY_SP,
+                body,
+                shebang: Default::default(),
+            })
+        })
+    }
+
+    fn generate_file(&self, env: &Env, file: &Arc<ApiFile>, client: &Ident) -> Result<ExportDecl> {
+        Ok(ExportDecl {
+            span: DUMMY_SP,
+            decl: Decl::Var(VarDecl {
+                span: DUMMY_SP,
+                kind: VarDeclKind::Const,
+                declare: Default::default(),
+                decls: vec![VarDeclarator {
+                    span: DUMMY_SP,
+                    name: Ident::new(file.class_name.clone(), DUMMY_SP).into(),
+                    init: Some(box Expr::Object(
+                        self.generate_object_for_file(env, file, client)?,
+                    )),
+                    definite: Default::default(),
+                }],
+            }),
+        })
+    }
+
+    fn generate_object_for_file(
+        &self,
+        env: &Env,
+        file: &Arc<ApiFile>,
+        client: &Ident,
+    ) -> Result<ObjectLit> {
+        env.with(|| {
             let fns = file
                 .functions
                 .iter()
                 .map(|f| {
-                    self.generate_fn(file, f, &client)
+                    self.generate_fn(file, f, client)
                         .map(|f| {
                             Prop::Method(MethodProp {
                                 key: f.ident.clone().into(),
@@ -70,18 +108,9 @@ impl JsClientConfig {
                 })
                 .collect::<Result<Vec<_>>>()?;
 
-            let expr = box Expr::Object(ObjectLit {
+            Ok(ObjectLit {
                 span: DUMMY_SP,
                 props: fns,
-            });
-
-            let export = ModuleItem::ModuleDecl(ModuleDecl::ExportDefaultExpr(ExportDefaultExpr {
-                span: DUMMY_SP,
-                expr,
-            }));
-            Ok(Module {
-                body: vec![import, export],
-                ..Module::dummy()
             })
         })
     }

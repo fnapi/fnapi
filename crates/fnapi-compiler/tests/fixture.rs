@@ -2,7 +2,7 @@
 
 use std::{path::PathBuf, sync::Arc};
 
-use fnapi_api_def::ApiFile;
+use fnapi_api_def::{ApiFile, ProjectApis};
 use fnapi_compiler::{
     project::{InputFiles, ProjectConfig},
     ServerApiFile,
@@ -17,8 +17,16 @@ use testing::NormalizedOutput;
 fn compile(input: PathBuf) {
     let output_path = input.with_file_name("output.mjs");
     let api_def_output = input.with_file_name("apiDef.json");
-    let node_client = input.with_file_name("client.node.mjs");
-    let web_client = input.with_file_name("client.web.mjs");
+    let node_client = input
+        .parent()
+        .unwrap()
+        .join("output")
+        .join("client.node.mjs");
+    let web_client = input
+        .parent()
+        .unwrap()
+        .join("output")
+        .join("client.web.mjs");
 
     let (code, api_def) = run_async_test(
         HandlerOpts {
@@ -80,8 +88,12 @@ fn test_client_codegen(
     api: &Arc<ApiFile>,
     config: fnapi_client_gen::JsClientConfig,
 ) -> NormalizedOutput {
+    let project = ProjectApis {
+        files: vec![api.clone()],
+    };
+
     let output = config
-        .generate_file(env, api)
+        .generate(env, &project)
         .expect("failed to generate client");
 
     print(Default::default(), &output).into()
