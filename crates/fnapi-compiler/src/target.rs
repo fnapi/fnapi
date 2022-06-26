@@ -51,7 +51,7 @@ impl Entity for ServerlessService {
 
 impl ServerTarget for ServerlessService {
     fn wrap_api_class_import_path(&self) -> JsWord {
-        format!("@fnapi/api/rt/vendor/{}/wrapApiClass.js", self.0.id()).into()
+        format!("@fnapi/api/rt/_vendor/{}/wrapApiClass.js", self.0.id()).into()
     }
 }
 
