@@ -2,6 +2,7 @@ use std::{fs::create_dir_all, path::PathBuf, sync::Arc};
 
 use anyhow::{bail, Context, Error, Result};
 use clap::{ArgEnum, Parser};
+use fnapi_api_def::ProjectApis;
 use fnapi_compiler::{
     project::{InputFiles, ProjectConfig},
     target::{AwsLambda, Native, NextJs, ServerTarget, ServerlessService},
@@ -108,10 +109,14 @@ impl BuildCommand {
 
         yield_now().await;
 
-        let _files = join_all(handles)
+        let files = join_all(handles)
             .await
             .into_iter()
             .collect::<Result<Result<Vec<_>>, _>>()??;
+
+        let file_apis = files.into_iter().map(|v| v.2.clone()).collect::<Vec<_>>();
+
+        let project_apis = ProjectApis { files: file_apis };
 
         Ok(())
     }
