@@ -1,6 +1,7 @@
 
 
 __vendor/
+target/
 
 # Generated
 CHANGELOG.md
@@ -12,4 +13,4 @@ output/
 output.js
 output.mjs
 output.*.js
-client.*.mjs
+**/client.*.mjs
