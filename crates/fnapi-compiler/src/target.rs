@@ -2,11 +2,11 @@ use std::{borrow::Cow, sync::Arc};
 
 use anyhow::Result;
 use fnapi_api_def::{ApiFile, ApiFn, ProjectApis};
-use fnapi_core::HasId;
+use fnapi_core::Entity;
 use swc_atoms::JsWord;
 
 /// The target of **server**.
-pub trait ServerTarget: HasId {
+pub trait ServerTarget: Entity {
     fn wrap_api_class_import_path(&self) -> JsWord;
 }
 
@@ -19,7 +19,7 @@ pub struct ApiDesc<'a> {
 
 pub struct Native {}
 
-impl HasId for Native {
+impl Entity for Native {
     fn id(&self) -> Cow<'static, str> {
         "fnapi".into()
     }
@@ -35,11 +35,11 @@ impl ServerTarget for Native {
     }
 }
 
-pub trait ServerlessTarget: HasId {}
+pub trait ServerlessTarget: Entity {}
 
 pub struct ServerlessService(pub dyn ServerlessTarget);
 
-impl HasId for ServerlessService {
+impl Entity for ServerlessService {
     fn id(&self) -> Cow<'static, str> {
         self.0.id()
     }
@@ -55,12 +55,28 @@ impl ServerTarget for ServerlessService {
 
 pub struct NextJs {}
 
+impl Entity for NextJs {
+    fn id(&self) -> Cow<'static, str> {
+        "next-js".into()
+    }
+
+    fn name(&self) -> Cow<'static, str> {
+        "NextJs".into()
+    }
+}
+
 impl ServerlessTarget for NextJs {}
 
 pub struct AwsLambda {}
 
-impl ServerlessTarget for AwsLambda {
-    fn name(&self) -> &'static str {
-        "AWS Lambda"
+impl Entity for AwsLambda {
+    fn id(&self) -> Cow<'static, str> {
+        "aws-lambda".into()
+    }
+
+    fn name(&self) -> Cow<'static, str> {
+        "AWS Lambda".into()
     }
 }
+
+impl ServerlessTarget for AwsLambda {}
