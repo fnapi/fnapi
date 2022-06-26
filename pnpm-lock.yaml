@@ -6,6 +6,7 @@ importers:
     specifiers:
       '@babel/core': ^7.18.5
       '@babel/eslint-parser': ^7.18.2
+      '@babel/plugin-syntax-decorators': ^7.17.12
       '@babel/plugin-syntax-jsx': ^7.17.12
       '@babel/plugin-syntax-typescript': ^7.17.12
       eslint: 8.10.0
@@ -18,6 +19,7 @@ importers:
     devDependencies:
       '@babel/core': 7.18.5
       '@babel/eslint-parser': 7.18.2_t36dvvh4okusicu662jhvhq2he
+      '@babel/plugin-syntax-decorators': 7.17.12_@babel+core@7.18.5
       '@babel/plugin-syntax-jsx': 7.17.12_@babel+core@7.18.5
       '@babel/plugin-syntax-typescript': 7.17.12_@babel+core@7.18.5
       eslint: 8.10.0
@@ -278,6 +280,16 @@ packages:
     hasBin: true
     dependencies:
       '@babel/types': 7.18.4
+    dev: true
+
+  /@babel/plugin-syntax-decorators/7.17.12_@babel+core@7.18.5:
+    resolution: {integrity: sha512-D1Hz0qtGTza8K2xGyEdVNCYLdVHukAcbQr4K3/s6r/esadyEriZovpJimQOpu8ju4/jV8dW/1xdaE0UpDroidw==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.18.5
+      '@babel/helper-plugin-utils': 7.17.12
     dev: true
 
   /@babel/plugin-syntax-jsx/7.17.12_@babel+core@7.18.5:
