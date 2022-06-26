@@ -2,7 +2,7 @@
 
 use std::{path::PathBuf, sync::Arc};
 
-use fnapi_api_def::ApiFile;
+use fnapi_api_def::{ApiFile, ApiProject, ProjectApis};
 use fnapi_compiler::{
     project::{InputFiles, ProjectConfig},
     ServerApiFile,
@@ -80,8 +80,12 @@ fn test_client_codegen(
     api: &Arc<ApiFile>,
     config: fnapi_client_gen::JsClientConfig,
 ) -> NormalizedOutput {
+    let project = ProjectApis {
+        files: vec![api.clone()],
+    };
+
     let output = config
-        .generate_file(env, api)
+        .generate(env, &project)
         .expect("failed to generate client");
 
     print(Default::default(), &output).into()
