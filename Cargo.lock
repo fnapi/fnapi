@@ -546,6 +546,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
+ "fnapi-api-def",
  "fnapi-compiler",
  "fnapi-core",
  "fnapi-testing",
