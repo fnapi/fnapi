@@ -4,7 +4,7 @@ use std::{
     sync::Arc,
 };
 
-use anyhow::{Context, Error, Result};
+use anyhow::{bail, Context, Error, Result};
 use clap::{ArgEnum, Parser};
 use fnapi_compiler::{
     project::{InputFiles, ProjectConfig},
@@ -73,7 +73,11 @@ impl BuildCommand {
             .context("failed to expand inputs")?
             .into_iter()
             .flatten()
-            .collect();
+            .collect::<Vec<_>>();
+
+        if inputs.is_empty() {
+            bail!("no inputs found");
+        }
 
         let fnapi_dir = self.fnapi_dir.unwrap_or_else(|| PathBuf::from(".fnapi"));
 
