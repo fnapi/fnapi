@@ -25,7 +25,7 @@ pub struct JsClientConfig {
 }
 
 impl JsClientConfig {
-    pub fn generate(&self, env: &Env, project: &Project) -> Result<Vec<Module>> {
+    pub fn generate(&self, env: &Env, project: &Project) -> Result<Module> {
         project
             .files
             .par_iter()
@@ -33,7 +33,9 @@ impl JsClientConfig {
             .collect::<Result<_>>()
     }
 
-    pub fn generate_file(&self, env: &Env, file: &Arc<ApiFile>) -> Result<Module> {
+    pub fn generate_file(&self, env: &Env, file: &Arc<ApiFile>) -> Result<Module> {}
+
+    fn generate_object_for_file(&self, env: &Env, file: &Arc<ApiFile>) -> Result<ObjectLit> {
         env.with(|| {
             let client = private_ident!("__client");
             let import = ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
