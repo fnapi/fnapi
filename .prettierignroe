@@ -12,4 +12,3 @@ output/
 output.js
 output.mjs
 output.*.js
-**/client.*.mjs
