@@ -163,7 +163,9 @@ jobs:
         with:
           image: ${{ matrix.settings.docker }}
           options: --user 0:0 -v ${{ github.workspace }}/.cargo-cache/git/db:/root/.cargo/git/db -v ${{ github.workspace }}/.cargo/registry/cache:/root/.cargo/registry/cache -v ${{ github.workspace }}/.cargo/registry/index:/root/.cargo/registry/index -v ${{ github.workspace }}:/build -w /build
-          run: ${{ matrix.settings.build }}
+          run: |
+            pnpm i
+            ${{ matrix.settings.build }}
       - name: Build
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
