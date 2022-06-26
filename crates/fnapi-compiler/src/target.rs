@@ -9,10 +9,16 @@ pub struct Direct {}
 
 impl Target for Direct {}
 
+pub trait ServerlessTarget {}
+
+pub struct Serverless(pub dyn ServerlessTarget);
+
+impl Target for Serverless {}
+
 pub struct NextJs {}
 
-impl Target for NextJs {}
+impl ServerlessTarget for NextJs {}
 
 pub struct AwsLambda {}
 
-impl Target for AwsLambda {}
+impl ServerlessTarget for AwsLambda {}
