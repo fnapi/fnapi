@@ -2,12 +2,11 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use fnapi_api_def::{ApiFile, ApiFn, ProjectApis};
+use fnapi_core::Identifiable;
 use swc_atoms::JsWord;
 
 /// The target of **server**.
-pub trait ServerTarget: Send + Sync {
-    fn name(&self) -> &'static str;
-
+pub trait ServerTarget: Identifiable {
     fn wrap_api_class_import_path(&self) -> JsWord;
 }
 
@@ -20,6 +19,8 @@ pub struct ApiDesc<'a> {
 
 pub struct Native {}
 
+impl Identifiable for Native {}
+
 impl ServerTarget for Native {
     fn name(&self) -> &'static str {
         "fnapi"
@@ -30,9 +31,7 @@ impl ServerTarget for Native {
     }
 }
 
-pub trait ServerlessTarget: Send + Sync {
-    fn name(&self) -> &'static str;
-}
+pub trait ServerlessTarget: Identifiable {}
 
 pub struct ServerlessService(pub dyn ServerlessTarget);
 
