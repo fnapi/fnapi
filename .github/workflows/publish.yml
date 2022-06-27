@@ -21,26 +21,26 @@ jobs:
           - host: macos-latest
             target: x86_64-apple-darwin
             build: |
-              pnpm run --dir ./packages/compiler build:release:native
+              yarn run --cwd=./packages/compiler build:release:native
               strip -x packages/compiler/*.node
           - host: windows-latest
-            build: pnpm run --dir ./packages/compiler build:release:native
+            build: yarn run --cwd=./packages/compiler build:release:native
             target: x86_64-pc-windows-msvc
           - host: windows-latest
             build: |
-              pnpm run --dir ./packages/compiler build:release:native --target i686-pc-windows-msvc
+              yarn run --cwd=./packages/compiler build:release:native --target i686-pc-windows-msvc
             target: i686-pc-windows-msvc
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
             build: |-
               set -e &&
-              HOME=/build/ pnpm run --dir ./packages/compiler build:release:native --target x86_64-unknown-linux-gnu &&
+              HOME=/build/ yarn run --cwd=./packages/compiler build:release:native --target x86_64-unknown-linux-gnu &&
               strip packages/compiler/*.node
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: set -e && pnpm run --dir ./packages/compiler build:release:native && strip packages/compiler/*.node
+            build: set -e && yarn run --cwd=./packages/compiler build:release:native && strip packages/compiler/*.node
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
@@ -49,7 +49,7 @@ jobs:
               export CXX=$(xcrun -f clang++);
               SYSROOT=$(xcrun --sdk macosx --show-sdk-path);
               export CFLAGS="-isysroot $SYSROOT -isystem $SYSROOT";
-              pnpm run --dir ./packages/compiler build:release:native --target aarch64-apple-darwin
+              yarn run --cwd=./packages/compiler build:release:native --target aarch64-apple-darwin
               strip -x packages/compiler/*.node
           - host: ubuntu-latest
             target: aarch64-unknown-linux-gnu
@@ -60,7 +60,7 @@ jobs:
               yarn --ignore-scripts &&
               rustup target add aarch64-unknown-linux-gnu &&
               export CC_aarch64_unknown_linux_gnu=/usr/aarch64-unknown-linux-gnu/bin/aarch64-unknown-linux-gnu-gcc &&
-              HOME=/build/ pnpm run --dir ./packages/compiler build:release:native --target aarch64-unknown-linux-gnu &&
+              HOME=/build/ yarn run --cwd=./packages/compiler build:release:native --target aarch64-unknown-linux-gnu &&
               llvm-strip -x packages/compiler/*.node
           - host: ubuntu-latest
             target: armv7-unknown-linux-gnueabihf
@@ -68,7 +68,7 @@ jobs:
               sudo apt-get update
               sudo apt-get install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf -y
             build: |
-              pnpm run --dir ./packages/compiler build:release:native --target=armv7-unknown-linux-gnueabihf
+              yarn run --cwd=./packages/compiler build:release:native --target=armv7-unknown-linux-gnueabihf
               arm-linux-gnueabihf-strip packages/compiler/*.node
           # - host: ubuntu-latest
           #   target: aarch64-linux-android
@@ -78,7 +78,7 @@ jobs:
           #     export CXX="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang++"
           #     export AR="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
           #     export PATH="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH}"
-          #     pnpm run --dir ./packages/compiler build:release:native --target aarch64-linux-android
+          #     yarn run --cwd=./packages/compiler build:release:native --target aarch64-linux-android
           #     ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip packages/compiler/*.node
           # - host: ubuntu-latest
           #   target: armv7-linux-androideabi
@@ -88,7 +88,7 @@ jobs:
           #     export CXX="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi24-clang++"
           #     export AR="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
           #     export PATH="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH}"
-          #     pnpm run --dir ./packages/compiler build:release:native --target armv7-linux-androideabi
+          #     yarn run --cwd=./packages/compiler build:release:native --target armv7-linux-androideabi
           #     ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip packages/compiler/*.node
           - host: ubuntu-latest
             target: aarch64-unknown-linux-musl
@@ -96,11 +96,11 @@ jobs:
             build: |-
               set -e &&
               rustup target add aarch64-unknown-linux-musl &&
-              pnpm run --dir ./packages/compiler build:release:native --target aarch64-unknown-linux-musl &&
+              yarn run --cwd=./packages/compiler build:release:native --target aarch64-unknown-linux-musl &&
               /aarch64-linux-musl-cross/bin/aarch64-linux-musl-strip packages/compiler/*.node
           - host: windows-latest
             target: aarch64-pc-windows-msvc
-            build: pnpm run --dir ./packages/compiler build:release:native --target aarch64-pc-windows-msvc
+            build: yarn run --cwd=./packages/compiler build:release:native --target aarch64-pc-windows-msvc
     name: Release build - ${{ matrix.settings.target }} - node@16
     runs-on: ${{ matrix.settings.host }}
     steps:
