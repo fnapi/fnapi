@@ -113,7 +113,7 @@ fn api_pkg_src_dir() -> Arc<PathBuf> {
             .join("packages")
             .join("api");
 
-        let mut cmd = std::process::Command::new("pnpm");
+        let mut cmd = std::process::Command::new("yarn");
         cmd.current_dir(&dir).arg("run").arg("build:tsc");
         let _status = cmd.status().expect("failed to compile api package");
         // assert!(status.success());
