@@ -13,6 +13,6 @@ fn main() {
         Command::new("npx")
     };
 
-    let status = c.arg("rollup").arg("-c").status().unwrap();
+    let status = c.arg("rollup").arg("-c").arg("--verbose").status().unwrap();
     assert!(status.success());
 }
