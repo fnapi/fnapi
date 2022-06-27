@@ -14,7 +14,7 @@ export class Provider<T> {
 
 export function Provide<T>(op: ProvideFn<T>): Provider<T> {}
 
-export type ProvideFn<T> = (req: FnApiRequest, res: FnApiReply) => Promise<T>;
+export type ProvideFn<T> = (req: FnApiRequest, reply: FnApiReply) => Promise<T>;
 
 /**
  * Request context. This is a magic type processed by the compiler, and does not exist on runtime.
