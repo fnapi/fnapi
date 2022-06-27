@@ -24,7 +24,7 @@ pub(crate) struct TypeServer {
     client: RawClient,
 }
 
-const TYPE_SERVER_CODE: &str = include_str!("../../type-server.js");
+const TYPE_SERVER_CODE: &str = include_str!(concat!(env!("OUT_DIR"), "/type-server.js"));
 
 impl TypeServer {
     pub async fn start(input: &InputFiles) -> Result<Arc<Self>> {

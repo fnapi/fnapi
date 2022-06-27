@@ -59,8 +59,8 @@ importers:
 
   examples/next-app-example:
     specifiers:
-      '@fnapi/api': workspace:^1.0.0
-      '@fnapi/compiler': workspace:^1.0.0
+      '@fnapi/api': workspace:^0.0.1
+      '@fnapi/compiler': workspace:^0.0.1
       '@types/react': 18.0.14
       eslint: 8.18.0
       eslint-config-next: 12.1.6

@@ -10,13 +10,13 @@
     "build:fnapi": "fnapi build --server-target=nextjs fnapi"
   },
   "dependencies": {
-    "@fnapi/api": "workspace:^1.0.0",
+    "@fnapi/api": "workspace:^0.0.1",
     "next": "12.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@fnapi/compiler": "workspace:^1.0.0",
+    "@fnapi/compiler": "workspace:^0.0.1",
     "@types/react": "18.0.14",
     "eslint": "8.18.0",
     "eslint-config-next": "12.1.6",
