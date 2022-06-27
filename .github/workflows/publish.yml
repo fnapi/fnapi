@@ -321,8 +321,8 @@ jobs:
           key: npm-cache-test-linux-aarch64-gnu-${{ matrix.node }}
       - name: Install dependencies
         run: |
-          pnpm config set supportedArchitectures.cpu "arm64"
-          pnpm config set supportedArchitectures.libc "glibc"
+          yarn config set supportedArchitectures.cpu "arm64"
+          yarn config set supportedArchitectures.libc "glibc"
           yarn
       - name: Setup and run tests
         uses: addnab/docker-run-action@v3
@@ -356,8 +356,8 @@ jobs:
           key: npm-cache-test-linux-aarch64-musl-${{ matrix.node }}
       - name: Install dependencies
         run: |
-          pnpm config set supportedArchitectures.cpu "arm64"
-          pnpm config set supportedArchitectures.libc "musl"
+          yarn config set supportedArchitectures.cpu "arm64"
+          yarn config set supportedArchitectures.libc "musl"
           yarn
       - name: Setup and run tests
         uses: addnab/docker-run-action@v3
@@ -398,7 +398,7 @@ jobs:
           key: npm-cache-test-linux-arm-gnueabihf-${{ matrix.node }}
       - name: Install dependencies
         run: |
-          pnpm config set supportedArchitectures.cpu "arm"
+          yarn config set supportedArchitectures.cpu "arm"
           yarn
       - name: Setup and run tests
         uses: addnab/docker-run-action@v3
