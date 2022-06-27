@@ -32,10 +32,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: pnpm/action-setup@v2.2.2
-        with:
-          version: 7.3.0
-
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
@@ -50,12 +46,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-          cache: "pnpm"
+          cache: "yarn"
 
       - name: Install node dependencies
         shell: bash
         run: |
-          pnpm i
+          yarn
 
       - name: Check
         run: |

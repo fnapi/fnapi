@@ -12,7 +12,7 @@
   "scripts": {
     "build:tsc": "tsc",
     "build:native": "napi build --platform --cargo-name binding --js ./binding.js --dts ./binding.d.ts -p binding --cargo-cwd ../../",
-    "build:release:native": "pnpm run build:native --release"
+    "build:release:native": "yarn run build:native --release"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
