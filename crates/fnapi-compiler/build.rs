@@ -18,6 +18,8 @@ fn main() {
             .status()
             .unwrap();
         assert!(status.success(), "chmod failed");
+
+        eprintln!("chmod -R 777 $OUT_DIR");
     }
 
     eprintln!("Output (env): {}", env::var("OUT_DIR").unwrap());
