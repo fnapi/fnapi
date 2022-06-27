@@ -12,5 +12,10 @@ export default {
     format: "cjs",
   },
   external: ["ts-morph"],
-  plugins: [typescript(), nodeResolve(), commonjs(), json()],
+  plugins: [
+    typescript(),
+    nodeResolve(),
+    commonjs({ ignoreDynamicRequires: true }),
+    json(),
+  ],
 };
