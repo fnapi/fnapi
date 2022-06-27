@@ -34,7 +34,7 @@ jobs:
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
             build: |-
               set -e &&
-              HOME=/root/ pnpm run --dir ./packages/compiler build:release:native --target x86_64-unknown-linux-gnu &&
+              HOME=/build/ pnpm run --dir ./packages/compiler build:release:native --target x86_64-unknown-linux-gnu &&
               strip packages/compiler/*.node
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
@@ -59,7 +59,7 @@ jobs:
               pnpm i --ignore-scripts &&
               rustup target add aarch64-unknown-linux-gnu &&
               export CC_aarch64_unknown_linux_gnu=/usr/aarch64-unknown-linux-gnu/bin/aarch64-unknown-linux-gnu-gcc &&
-              HOME=/root/ pnpm run --dir ./packages/compiler build:release:native --target aarch64-unknown-linux-gnu &&
+              HOME=/build/ pnpm run --dir ./packages/compiler build:release:native --target aarch64-unknown-linux-gnu &&
               llvm-strip -x packages/compiler/*.node
           - host: ubuntu-latest
             target: armv7-unknown-linux-gnueabihf
