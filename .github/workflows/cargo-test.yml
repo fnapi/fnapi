@@ -53,15 +53,11 @@ jobs:
 
       - uses: actions/checkout@v3
 
-      - uses: pnpm/action-setup@v2.2.2
-        with:
-          version: 7.3.0
-
       # Source map format
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-          cache: "pnpm"
+          cache: yarn
 
       # We explicitly do this to cache properly.
       - name: Install Rust
@@ -81,7 +77,7 @@ jobs:
         shell: bash
         if: runner.os == 'Windows'
         run: |
-          echo $(pnpm global bin) >> $GITHUB_PATH
+          echo $(yarn global bin) >> $GITHUB_PATH
 
       - name: Run cargo test
         run: |
