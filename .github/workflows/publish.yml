@@ -3,6 +3,7 @@ env:
   DEBUG: napi:*
   APP_NAME: fnapi
   MACOSX_DEPLOYMENT_TARGET: "10.13"
+  CI: 1
 on:
   push:
     branches:
