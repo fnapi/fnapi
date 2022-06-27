@@ -75,7 +75,7 @@ jobs:
       - name: Install node dependencies
         shell: bash
         run: |
-          pnpm i
+          yarn
 
       - name: Configure path (windows)
         shell: bash

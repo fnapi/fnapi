@@ -57,7 +57,7 @@ jobs:
             build: >-
               set -e &&
               pnpm set store ~/.pnpm-store/ &&
-              pnpm i --ignore-scripts &&
+              yarn --ignore-scripts &&
               rustup target add aarch64-unknown-linux-gnu &&
               export CC_aarch64_unknown_linux_gnu=/usr/aarch64-unknown-linux-gnu/bin/aarch64-unknown-linux-gnu-gcc &&
               HOME=/build/ pnpm run --dir ./packages/compiler build:release:native --target aarch64-unknown-linux-gnu &&
@@ -150,7 +150,7 @@ jobs:
         run: pnpm config set supportedArchitectures.cpu "ia32"
         shell: bash
       - name: Install dependencies
-        run: pnpm i
+        run: yarn
       - name: Setup node x86
         uses: actions/setup-node@v3
         if: matrix.settings.target == 'i686-pc-windows-msvc'
@@ -208,7 +208,7 @@ jobs:
           path: .yarn/cache
           key: npm-cache-test-${{ matrix.settings.target }}-${{ matrix.node }}
       - name: Install dependencies
-        run: pnpm i
+        run: yarn
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -248,7 +248,7 @@ jobs:
           path: .yarn/cache
           key: npm-cache-test-linux-x64-gnu-${{ matrix.node }}
       - name: Install dependencies
-        run: pnpm i
+        run: yarn
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -290,7 +290,7 @@ jobs:
       - name: Install dependencies
         run: |
           pnpm config set supportedArchitectures.libc "musl"
-          pnpm i
+          yarn
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -336,7 +336,7 @@ jobs:
         run: |
           pnpm config set supportedArchitectures.cpu "arm64"
           pnpm config set supportedArchitectures.libc "glibc"
-          pnpm i
+          yarn
       - name: Setup and run tests
         uses: addnab/docker-run-action@v3
         with:
@@ -374,7 +374,7 @@ jobs:
         run: |
           pnpm config set supportedArchitectures.cpu "arm64"
           pnpm config set supportedArchitectures.libc "musl"
-          pnpm i
+          yarn
       - name: Setup and run tests
         uses: addnab/docker-run-action@v3
         with:
@@ -418,7 +418,7 @@ jobs:
       - name: Install dependencies
         run: |
           pnpm config set supportedArchitectures.cpu "arm"
-          pnpm i
+          yarn
       - name: Setup and run tests
         uses: addnab/docker-run-action@v3
         with:
@@ -461,7 +461,7 @@ jobs:
           restore-keys: |
             npm-cache-
       - name: Install dependencies
-        run: pnpm i
+        run: yarn
       - name: Download all artifacts
         uses: actions/download-artifact@v3
         with:
