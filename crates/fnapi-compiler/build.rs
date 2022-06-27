@@ -20,6 +20,9 @@ fn main() {
         assert!(status.success(), "chmod failed");
     }
 
+    eprintln!("Output (env): {}", env::var("OUT_DIR").unwrap());
+    eprintln!("Output: {}", out_dir.display());
+
     let mut c = if cfg!(target_os = "windows") {
         let mut c = Command::new("cmd");
         c.arg("/C").arg("npx");
