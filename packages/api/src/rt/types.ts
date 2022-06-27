@@ -4,11 +4,15 @@ export interface FnApiRequest {
   readonly raw: FastifyRequest;
 
   readonly params: ReadonlyArray<any>;
+}
 
-  /**
-   * @internal
-   */
-  getContext<C>(constructorForClass: new (...args: any) => C): C;
+/**
+ * @internal
+ */
+export interface InnerFnApiRequest extends FnApiRequest {
+  contexts: {
+    [key: symbol]: any;
+  };
 }
 
 export interface FnApiReply {
