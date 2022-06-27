@@ -163,7 +163,7 @@ jobs:
         if: ${{ matrix.settings.docker }}
         with:
           image: ${{ matrix.settings.docker }}
-          options: --user 0:0 -v ${{ github.workspace }}/.cargo-cache/git/db:/root/.cargo/git/db -v ${{ github.workspace }}/.cargo/registry/cache:/root/.cargo/registry/cache -v ${{ github.workspace }}/.cargo/registry/index:/root/.cargo/registry/index -v ${{ github.workspace }}:/build -w /build
+          options: --user 0:0 -v ${{ github.workspace }}/.cargo-cache/git/db:/root/.cargo/git/db:Z -v ${{ github.workspace }}/.cargo/registry/cache:/root/.cargo/registry/cache:Z -v ${{ github.workspace }}/.cargo/registry/index:/root/.cargo/registry/index:Z -v ${{ github.workspace }}:/build:Z -w /build
           run: ${{ matrix.settings.build }}
       - name: Build
         run: ${{ matrix.settings.build }}
