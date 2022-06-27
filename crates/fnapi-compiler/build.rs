@@ -10,7 +10,9 @@ fn main() {
         .canonicalize()
         .expect("failed to canonicalize output directory");
 
-    if !cfg!(target_os = "windows") && env::var("CI").as_deref() == Ok("1") {
+    if !cfg!(target_os = "windows")
+        && (env::var("CI").as_deref() == Ok("1") || env::var("CI").as_deref() == Ok("true"))
+    {
         let status = Command::new("chmod")
             .arg("-R")
             .arg("777")
