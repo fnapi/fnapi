@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use swc_common::{errors::HANDLER, Spanned};
+use swc_common::{errors::HANDLER, util::take::Take, Spanned};
 use swc_ecmascript::{
     ast::*,
     utils::{quote_ident, ExprFactory},
@@ -10,13 +10,22 @@ use swc_ecmascript::{
 use super::{import_analyzer::ImportMap, FNAPI_API_MODULE};
 
 /// Replaces `Context` and `ServerConfig` with a correct code.
-pub(crate) fn magic_replacer(req_var: Ident, imports: Arc<ImportMap>) -> impl VisitMut {
-    MagicReplacer { req_var, imports }
+pub(crate) fn magic_replacer(
+    req_var: Ident,
+    reply_var: Ident,
+    imports: Arc<ImportMap>,
+) -> impl VisitMut {
+    MagicReplacer {
+        req_var,
+        reply_var,
+        imports,
+    }
 }
 
 #[derive(Debug)]
 struct MagicReplacer {
     req_var: Ident,
+    reply_var: Ident,
     imports: Arc<ImportMap>,
 }
 
@@ -37,7 +46,29 @@ impl VisitMut for MagicReplacer {
         })) = &e.callee
         {
             if &*prop.sym == "get" {
-                if !self.is_magic_type("Context", obj) && !self.is_magic_type("ServerConfig", obj) {
+                if self.is_magic_type("Context", obj) {
+                    if e.args.len() != 1 {
+                        HANDLER.with(|handler| {
+                            handler
+                                .struct_span_err(
+                                    e.span,
+                                    "Context.get() is a magic call and should have exactly one \
+                                     argument",
+                                )
+                                .emit();
+                        });
+                    }
+
+                    let provider = e.args[0].expr.take();
+                    e.args.clear();
+
+                    e.args.push(self.req_var.clone().as_arg());
+                    e.args.push(self.reply_var.clone().as_arg());
+
+                    return;
+                }
+
+                if !self.is_magic_type("ServerConfig", obj) {
                     return;
                 }
 
