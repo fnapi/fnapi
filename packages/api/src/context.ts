@@ -8,13 +8,23 @@ export declare class Context {
 }
 
 export class Provider<T> {
-  #op: ProvideFn<T>;
-  #symbol: unique symbol;
+  /**
+   * @internal
+   */
+  constructor(
+    private readonly symbol: symbol,
+    private readonly op: ProviderFn<T>
+  ) {}
 }
 
-export function Provide<T>(op: ProvideFn<T>): Provider<T> {}
+export function Provide<T>(op: ProviderFn<T>): Provider<T> {
+  return new Provider<T>(Symbol("Provider"), op);
+}
 
-export type ProvideFn<T> = (req: FnApiRequest, reply: FnApiReply) => Promise<T>;
+export type ProviderFn<T> = (
+  req: FnApiRequest,
+  reply: FnApiReply
+) => Promise<T>;
 
 /**
  * Request context. This is a magic type processed by the compiler, and does not exist on runtime.
