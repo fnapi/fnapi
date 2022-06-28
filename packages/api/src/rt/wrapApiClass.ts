@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 
-import { FnApiHandler, FnApiReply, InternalFnApiRequest } from "./types";
+import { FnApiHandler, FnApiReply, FnApiRequest } from "./types";
 
 type JsonSchema = object;
 
@@ -62,7 +62,7 @@ export default function wrapApiClass(
         handler: async (req, reply) => {
           const params = Object.freeze(parseParams(req.body as object));
 
-          const fReq: InternalFnApiRequest = {
+          const fReq: FnApiRequest = {
             raw: req,
             params,
             contexts: {},
