@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 
-import { FnApiHandler, FnApiReply, FnApiRequest } from "./types";
+import { FnApiHandler, FnApiReply, InternalFnApiRequest } from "./types";
 
 type JsonSchema = object;
 
@@ -62,12 +62,10 @@ export default function wrapApiClass(
         handler: async (req, reply) => {
           const params = Object.freeze(parseParams(req.body as object));
 
-          const fReq: FnApiRequest = {
+          const fReq: InternalFnApiRequest = {
             raw: req,
             params,
-            getContext(c) {
-              throw new Error(`Context injection is not implemented yet`);
-            },
+            contexts: {},
           };
           const fReply: FnApiReply = {
             raw: reply,
