@@ -25,10 +25,3 @@ export type ProviderFn<T> = (
   req: FnApiRequest,
   reply: FnApiReply
 ) => Promise<T>;
-
-/**
- * Request context. This is a magic type processed by the compiler, and does not exist on runtime.
- */
-export declare class ServerConfig {
-  static get<T = never>(): T;
-}
