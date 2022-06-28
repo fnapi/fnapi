@@ -57,6 +57,7 @@ impl VisitMut for MagicReplacer {
                                 )
                                 .emit();
                         });
+                        return;
                     }
 
                     let provider = e.args[0].expr.take();
