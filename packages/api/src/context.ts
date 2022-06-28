@@ -14,13 +14,13 @@ export class Provider<T> {
   constructor(
     private readonly symbol: symbol,
     private readonly op: ProviderFn<T>
-  ) { }
+  ) {}
 
   /**
    * @internal
    */
-  public async provide(req: InternalFnApiRequest, reply: FnApiReply): Promise<T> {
-    return req.contexts[this.symbol] ??= this.op(req, reply);
+  public async get(req: InternalFnApiRequest, reply: FnApiReply): Promise<T> {
+    return (req.contexts[this.symbol] ??= this.op(req, reply));
   }
 }
 
