@@ -1,5 +1,5 @@
-import wrapApiClass from "@fnapi/api/rt/wrapApiClass.js";
-import wrapFnApiConfig from "@fnapi/api/rt/wrapFnApiConfig.js";
+import wrapApiClass from "@fnapi/api/lib/rt/wrapApiClass.js";
+import wrapFnApiConfig from "@fnapi/api/lib/rt/wrapFnApiConfig.js";
 const __fnapi_config_for_test = wrapFnApiConfig({
     httpMethod: 'GET'
 });
