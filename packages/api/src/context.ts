@@ -1,4 +1,4 @@
-import { FnApiReply, FnApiRequest } from "./rt/types";
+import { FnApiReply, FnApiRequest, InternalFnApiRequest } from "./rt/types";
 
 /**
  * Request context. This is a magic type processed by the compiler, and does not exist on runtime.
@@ -14,7 +14,14 @@ export class Provider<T> {
   constructor(
     private readonly symbol: symbol,
     private readonly op: ProviderFn<T>
-  ) {}
+  ) { }
+
+  /**
+   * @internal
+   */
+  public async provide(req: InternalFnApiRequest, reply: FnApiReply): Promise<T> {
+    return req.contexts[this.symbol] ??= this.op(req, reply);
+  }
 }
 
 export function Provide<T>(op: ProviderFn<T>): Provider<T> {

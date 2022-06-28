@@ -9,7 +9,7 @@ export interface FnApiRequest {
 /**
  * @internal
  */
-export interface InnerFnApiRequest extends FnApiRequest {
+export interface InternalFnApiRequest extends FnApiRequest {
   contexts: {
     [key: symbol]: any;
   };
