@@ -5,6 +5,7 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
+    "jest": "^28.1.1",
     "typescript": "^4.6.2"
   },
   "dependencies": {
@@ -12,6 +13,7 @@
   },
   "type": "module",
   "scripts": {
-    "build:tsc": "rm -rf **/*.js **/*.d.ts && tsc"
+    "build:tsc": "rm -rf **/*.js **/*.d.ts && tsc",
+    "test": "jest"
   }
 }
