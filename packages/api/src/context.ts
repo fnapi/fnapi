@@ -24,7 +24,7 @@ export class Provider<T> {
   }
 }
 
-export function Provide<T>(op: ProviderFn<T>): Provider<T> {
+export function provide<T>(op: ProviderFn<T>): Provider<T> {
   return new Provider<T>(Symbol("Provider"), op);
 }
 

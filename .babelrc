@@ -1,3 +1,12 @@
 {
-  "plugins": ["@babel/plugin-syntax-typescript", "@babel/plugin-syntax-jsx"]
+  "plugins": [
+    "@babel/plugin-syntax-typescript",
+    "@babel/plugin-syntax-jsx",
+    [
+      "@babel/plugin-syntax-decorators",
+      {
+        "decoratorsBeforeExport": true
+      }
+    ]
+  ]
 }
