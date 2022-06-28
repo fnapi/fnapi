@@ -282,12 +282,16 @@ impl FileCompiler<'_> {
         method.function.params.push(Param {
             span: DUMMY_SP,
             decorators: Default::default(),
-            pat: Pat::Ident(reply_var.into()),
+            pat: Pat::Ident(reply_var.clone().into()),
         });
 
         prepend_stmts(&mut body.stmts, stmts_for_param_init.into_iter());
 
-        body.visit_mut_with(&mut magic_replacer(req_var, self.imports.clone()));
+        body.visit_mut_with(&mut magic_replacer(
+            req_var,
+            reply_var,
+            self.imports.clone(),
+        ));
 
         let ret_ty =
             self.extract_return_type(method.function.span, &method.function.return_type)?;
