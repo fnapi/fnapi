@@ -66,6 +66,8 @@ impl VisitMut for MagicReplacer {
                     e.args.push(self.req_var.clone().as_arg());
                     e.args.push(self.reply_var.clone().as_arg());
 
+                    e.callee = Callee::Expr(provider);
+
                     return;
                 }
 
