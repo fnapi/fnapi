@@ -43,7 +43,7 @@ fn exec(tsconfig_json: PathBuf) {
                     &js_path,
                     format!(
                         "export * as rt from '{}/rt/index.js';",
-                        api_pkg_src_dir().display(),
+                        api_pkg_dir().display(),
                     ),
                 )
                 .await?;
@@ -103,7 +103,7 @@ fn print(cm: Arc<SourceMap>, m: &Module) -> String {
 }
 
 /// Compiles `@fnapi/api` package and returns the path to it.
-fn api_pkg_src_dir() -> Arc<PathBuf> {
+fn api_pkg_dir() -> Arc<PathBuf> {
     static DIR: Lazy<Arc<PathBuf>> = Lazy::new(|| {
         let dir = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap())
             .parent()
@@ -118,7 +118,7 @@ fn api_pkg_src_dir() -> Arc<PathBuf> {
         let _status = cmd.status().expect("failed to compile api package");
         // assert!(status.success());
 
-        Arc::new(dir.join("src"))
+        Arc::new(dir)
     });
 
     DIR.clone()
@@ -133,7 +133,7 @@ impl VisitMut for ImportReplacer {
         if i.src.value.starts_with("@fnapi/api") {
             i.src.raw = None;
 
-            let api_dir = api_pkg_src_dir();
+            let api_dir = api_pkg_dir();
 
             if &*i.src.value == "@fnapi/api" {
                 i.src.value = format!("{}/index.js", api_dir.display()).into();
