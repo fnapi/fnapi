@@ -20,7 +20,7 @@ export class Provider<T> {
    * @internal
    */
   public async get(req: InternalFnApiRequest, reply: FnApiReply): Promise<T> {
-    return (req.contexts[this.symbol] ??= this.op(req, reply));
+    return await (req.contexts[this.symbol] ??= this.op(req, reply));
   }
 }
 
