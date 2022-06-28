@@ -35,7 +35,7 @@ impl JsClientConfig {
                     local: client.clone(),
                 })],
                 src: format!(
-                    "@fnapi/api/client/{}.js",
+                    "@fnapi/api/lib/client/{}.js",
                     match self.target_env {
                         JsTargetEnv::Web => "web",
                         JsTargetEnv::NodeJs => "nodejs",

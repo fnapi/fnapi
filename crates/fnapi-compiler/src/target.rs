@@ -31,7 +31,7 @@ impl Entity for Native {
 
 impl ServerTarget for Native {
     fn wrap_api_class_import_path(&self) -> JsWord {
-        "@fnapi/api/rt/wrapApiClass.js".into()
+        "@fnapi/api/lib/rt/wrapApiClass.js".into()
     }
 }
 
@@ -58,7 +58,7 @@ impl Entity for ServerlessService {
 
 impl ServerTarget for ServerlessService {
     fn wrap_api_class_import_path(&self) -> JsWord {
-        format!("@fnapi/api/rt/_vendor/{}/wrapApiClass.js", self.0.id()).into()
+        format!("@fnapi/api/lib/rt/_vendor/{}/wrapApiClass.js", self.0.id()).into()
     }
 }
 
