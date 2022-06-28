@@ -20,7 +20,8 @@
     },
     "test": {
       "dependsOn": ["build"],
-      "outputs": []
+      "outputs": [],
+      "cache": false
     },
     "build:release:native": {
       "dependsOn": ["^build:release:native"],
