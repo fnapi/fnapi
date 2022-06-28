@@ -1,5 +1,5 @@
 import { it, describe, expect } from "@jest/globals";
-import { provide } from "../context";
+import { provide } from "../lib/context";
 
 describe("context", () => {
   it("should work", () => {
