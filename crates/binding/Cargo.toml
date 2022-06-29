@@ -36,10 +36,10 @@ serde = {version = "1", features = ["derive"]}
 serde_json = {version = "1", features = ["unbounded_depth"]}
 swc_atoms = "0.2.12"
 swc_cached = "0.1.1"
-swc_common = {version = "0.18.9", features = ["concurrent"]}
-swc_ecma_loader = {version = "0.30.2", features = ["node", "lru", "tsc", "cache"]}
-swc_ecma_parser = "0.105.6"
-swc_error_reporters = "0.2.0"
+swc_common = { version = "0.19.1", features = ["concurrent"] }
+swc_ecma_loader = { version = "0.31.0", features = ["node", "lru", "tsc", "cache"] }
+swc_ecma_parser = "0.107.0"
+swc_error_reporters = "0.3.0"
 swc_nodejs_common = "0.0.1"
 tokio = {version = "1", features = ["sync"]}
 tracing = {version = "0.1.32", features = ["release_max_level_info"]}
