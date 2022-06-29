@@ -13,14 +13,15 @@
     },
     "build:tsc": {
       "dependsOn": ["^build:tsc"],
-      "inputs": ["src/**/*.ts", "src/**/*.tsx"]
+      "inputs": ["lib/**/*.ts", "lib/**/*.tsx", "tsconfig.json"]
     },
     "build": {
       "dependsOn": ["^build", "build:native", "build:fnapi", "build:tsc"]
     },
     "test": {
       "dependsOn": ["build"],
-      "outputs": []
+      "outputs": [],
+      "cache": false
     },
     "build:release:native": {
       "dependsOn": ["^build:release:native"],

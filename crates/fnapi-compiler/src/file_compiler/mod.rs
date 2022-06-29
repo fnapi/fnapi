@@ -479,7 +479,7 @@ impl VisitMut for FileCompiler<'_> {
                             span: DUMMY_SP,
                             local: self.wrap_fnapi_config.clone().unwrap(),
                         })],
-                        src: "@fnapi/api/rt/wrapFnApiConfig.js".into(),
+                        src: "@fnapi/api/lib/rt/wrapFnApiConfig.js".into(),
                         type_only: false,
                         asserts: Default::default(),
                     }));

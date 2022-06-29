@@ -65,9 +65,7 @@ export default function wrapApiClass(
           const fReq: FnApiRequest = {
             raw: req,
             params,
-            getContext(c) {
-              throw new Error(`Context injection is not implemented yet`);
-            },
+            contexts: {},
           };
           const fReply: FnApiReply = {
             raw: reply,

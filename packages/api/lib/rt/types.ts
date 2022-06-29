@@ -4,12 +4,10 @@ export interface FnApiRequest {
   readonly raw: FastifyRequest;
 
   readonly params: ReadonlyArray<any>;
-}
 
-/**
- * @internal
- */
-export interface InternalFnApiRequest extends FnApiRequest {
+  /**
+   * @internal
+   */
   contexts: {
     [key: symbol]: any;
   };
